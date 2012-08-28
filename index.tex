@@ -53,7 +53,7 @@
 
 \begin{document}
 
-\title{NFQL: A Swiss-Army Knife of Efficient Flow-Record Processing}
+\title{NFQL: The Swiss-Army Knife of Efficient Flow-Record Processing}
 
 \author{\IEEEauthorblockN{Vaibhav Bajpai, Johannes Schauer, Jürgen
 Schönwälder} \IEEEauthorblockA{School of Electrical and Computer Science\\
@@ -65,18 +65,17 @@ Schönwälder} \IEEEauthorblockA{School of Electrical and Computer Science\\
 
 \begin{abstract} Cisco's NetFlow protocol and IETF's IPFIX open standard have
   contributed heavily in pushing IP flow export as the de-facto technique for
-  sending traffic patterns. These patterns have the potential to be used for
-  billing and mediation, bandwidth provisioning, detecting malicious attacks
-  and network performance evaluation. However, understanding these patterns
-  requires sophisticated flow analysis tools that can mine them for such a
-  usage. We recently proposed a framework design that can cap such
-  flow-records to their full potential. In this paper, we introduce \ac{NFQL}.
-  a holistic approach to an efficient implementation of the design. \ac{NFQL}
-  can process flow records, aggregate them into groups, apply absolute (or
-  relative) filters, invoke Allen interval algebra rules, and merge group
-  records in matter of minutes. The implementation has been underpinned by
-  suite of exhaustive benchmarks against contemporary flow-processing
-  tools.\end{abstract}
+  collecting aggregate network traffic statistics. These flow records have the
+  potential to be used for billing and mediation, bandwidth provisioning,
+  detecting malicious attacks and network performance evaluation. However,
+  understanding certain traffic patterns requires sophisticated flow analysis
+  tools that can mine flow records for such a usage. We recently proposed a
+  flow query language that can cap such flow-records. In this paper, we
+  introduce \ac{NFQL}. an efficient implementation of the query language.
+  \ac{NFQL} can process flow records, aggregate them into groups, apply
+  absolute (or relative) filters, invoke Allen interval algebra rules, and
+  merge group records. The implementation has been evaluated by suite of
+  benchmarks against contemporary flow-processing tools.\end{abstract}
 % no keywords
 
 
