@@ -1,0 +1,22 @@
+\texttt{flow-tools} \cite{sromig:2000} is a suite of programs for capturing
+and processing NetFlow v5 flow records. It consists of 24 separate tools that
+work together by connecting them via UNIX pipes. \todo{...}
+
+\texttt{nfdump} \cite{phaag:2006} works similar to flow-tools but uses a
+different storage format. Flow records are captured using \texttt{nfcapd} and
+then processed by \texttt{nfdump} which can filter as well as display the
+sorted and filtered result. The power of its filtering rules is similar to
+that of flow-tools and as such is mostly limited to absolute comparisons of
+flow attributes.
+
+\texttt{tcpdump} and \texttt{wireshark} are the most popular tools used for
+packet capture and analysis. \texttt{tcpdump} \cite{tcpdump-manpage} is a
+premier command-line utility that uses the \texttt{libpcap}
+\cite{pcap-manpage} library for packet capture. The power of \texttt{tcpdump}
+comes from the richness of its expressions, the ability to combine them using
+logical connectives and extract specific portions of a packet using filters.
+\texttt{wireshark} \cite{wireshark-manpage} is a GUI application, aimed at
+both journeymen and packet analysis experts. It supports a large number of
+protocols, has a straightforward layout, excellent documentation, and can run
+on all major operating systems.
+

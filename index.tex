@@ -41,14 +41,14 @@
 %----------------------------------------------------------------------
 \usepackage[utf8]{inputenc}
 \usepackage[nolist]{acronym}
+\renewcommand{\ttdefault}{cmtt}
 
+% temporaries
 \usepackage{scrtime}
 \usepackage{prelim2e}
 \usepackage{todonotes}
 \renewcommand{\PrelimWords}{\relax}
 \renewcommand{\PrelimText}{\footnotesize[\,\today\ at \thistime\,]}
-
-\renewcommand{\ttdefault}{cmtt}
 %----------------------------------------------------------------------
 
 \begin{document}
@@ -81,21 +81,17 @@ Schönwälder} \IEEEauthorblockA{School of Electrical and Computer Science\\
 
 
 \section{Introduction}
-
-\section{Design}
-
-\section{Implementation}
-  \subsection{Filter}
-  \subsection{Grouper}
-  \subsubsection{Group Aggregations}
-  \subsection{Group Filter}
-  \subsection{Merger}
-  \subsection{Ungrouper}
-
-\section{Performance Evaluation}
+\input{sections/introduction}
 \section{Related Work}
+\input{sections/relatedwork}
+\section{Flow Query Language}
+\input{sections/design}
+\section{Implementation}
+\input{sections/implementation}
+\section{Performance Evaluation}
+\input{sections/evaluation}
 \section{Conclusion}
-The \ac{NFQL} conclusion goes here \cite{vmarinov:2009}
+\input{sections/conclusion}
 
 % bibliography
 %----------------------------------------------------------------------
@@ -106,7 +102,7 @@ The \ac{NFQL} conclusion goes here \cite{vmarinov:2009}
 %\IEEEtriggeratref{8}
 % The "triggered" command can be changed if desired:
 %\IEEEtriggercmd{\enlargethispage{-5in}}
-
+\newpage
 \bibliographystyle{IEEEtran}
 \bibliography{index}
 %----------------------------------------------------------------------
