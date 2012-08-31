@@ -1,11 +1,24 @@
-A \ac{DNF} is a disjunction of conjunctive clauses. The elements of the
-conjuctive clauses are terms. Each stage of the pipeline is represented in the
-flowquery as a \ac{DNF} expression. The clauses in the \ac{DNF} are OR'd
-together, while the terms in each clauses themselves are AND'd. The abstract
-objects that store the JSON query and the results that incubate from each
-stage are designed to be self-descriptive and hierarchically chainable. The
-complete JSON query information for instance, is held within the
-\texttt{flowquery} struct. Each individual branch of the flowquery itself is
-described in a \texttt{branch} struct. A collection of these \texttt{branch}
-structs are referenced in the parent \texttt{flowquery} struct.
+The \ac{NFQL} execution engine reads the flow query at runtime in a
+\texttt{JSON} intermediate format. The entire flow query is a collection of
+\ac{DNF} expression. A \ac{DNF} expression is a disjunction of conjunctive
+clauses. The elements of the conjuctive clauses are terms. The clauses in the
+\ac{DNF} are OR'd together, while the terms in each clauses themselves are
+AND'd. The branchsets and each \ac{DNF} expression of the pipeline stage is a
+\texttt{JSON array}. \texttt{json-c}\footnote{\url{http://oss.metaparadigm.com/json-c/}} is used to
+parse the flow query file, and python scripts have been written to quickly
+serialize the python pipeline objects to a \texttt{JSON} query.
 
+
+The mapping of the \texttt{JSON} query to the structs defined in the execution
+engine is not trivial. When reading the \texttt{JSON} query at runtime, the
+field offsets of the NetFlow $v5$ record struct are read in as strings.
+Utility functions are defined that maps the read names to struct offsets and
+read type of each offset and the operations to unique \texttt{enum} members.
+
+The abstract objects that store the JSON query and the results that incubate
+from each stage are designed to be self-descriptive and hierarchically
+chainable. The complete JSON query information for instance, is held within
+the \texttt{flowquery} struct. Each individual branch of the flowquery itself
+is described in a \texttt{branch} struct. A collection of these
+\texttt{branch} structs are referenced in the parent \texttt{flowquery}
+struct.
