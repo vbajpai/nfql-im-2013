@@ -1,0 +1,11 @@
+A \ac{DNF} is a disjunction of conjunctive clauses. The elements of the
+conjuctive clauses are terms. Each stage of the pipeline is represented in the
+flowquery as a \ac{DNF} expression. The clauses in the \ac{DNF} are OR'd
+together, while the terms in each clauses themselves are AND'd. The abstract
+objects that store the JSON query and the results that incubate from each
+stage are designed to be self-descriptive and hierarchically chainable. The
+complete JSON query information for instance, is held within the
+\texttt{flowquery} struct. Each individual branch of the flowquery itself is
+described in a \texttt{branch} struct. A collection of these \texttt{branch}
+structs are referenced in the parent \texttt{flowquery} struct.
+
