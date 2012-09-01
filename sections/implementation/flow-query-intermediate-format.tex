@@ -8,6 +8,12 @@ AND'd. The branchsets and each \ac{DNF} expression of the pipeline stage is a
 parse the flow query file, and python scripts have been written to quickly
 serialize the python pipeline objects to a \texttt{JSON} query.
 
+The \texttt{JSON} query can also trigger and disable the stages at runtime.
+This means that one only has to supply the constructs that one wishes to use.
+The constructs that are not defined in the \texttt{JSON} query are inferred by
+the execution engine as a disable request. The execution engine uses disable
+flags that are turned on when the \texttt{JSON} query is parsed. These flags
+are used throughout the engine to only enable the requested functionality.
 
 The mapping of the \texttt{JSON} query to the structs defined in the execution
 engine is not trivial. When reading the \texttt{JSON} query at runtime, the
