@@ -1,14 +1,3 @@
-\texttt{flow-tools} \cite{sromig:2000} is a suite of programs for capturing
-and processing NetFlow v5 flow records. It consists of 24 separate tools that
-work together by connecting them via UNIX pipes. \todo{...}
-
-\texttt{nfdump} \cite{phaag:2006} works similar to flow-tools but uses a
-different storage format. Flow records are captured using \texttt{nfcapd} and
-then processed by \texttt{nfdump} which can filter as well as display the
-sorted and filtered result. The power of its filtering rules is similar to
-that of flow-tools and as such is mostly limited to absolute comparisons of
-flow attributes.
-
 \texttt{tcpdump} and \texttt{wireshark} are the most popular tools used for
 packet capture and analysis. \texttt{tcpdump} \cite{tcpdump-manpage} is a
 premier command-line utility that uses the \texttt{libpcap}
@@ -20,3 +9,32 @@ both journeymen and packet analysis experts. It supports a large number of
 protocols, has a straightforward layout, excellent documentation, and can run
 on all major operating systems.
 
+\texttt{flow-tools} \cite{sromig:2000} is a suite of programs for capturing
+and processing NetFlow v5 flow records. It consists of 24 separate tools that
+work together by connecting them via UNIX pipes. \todo{...}
+
+\texttt{nfdump} \cite{phaag:2006} works similar to flow-tools but uses a
+different storage format. Flow records are captured using \texttt{nfcapd} and
+then processed by \texttt{nfdump} which can filter as well as display the
+sorted and filtered result. The power of its filtering rules is similar to
+that of flow-tools and as such is mostly limited to absolute comparisons of
+flow attributes.
+
+SiLK\footnote{\url{http://tools.netsa.cert.org/silk/}} is a network traffic
+collection and analysis tool developed and maintained by the CERT Network
+Situational Awareness Team (CERT NetSA) at Carnegie Mellon University. SiLK is
+the tool that comes quite close to providing similar capabilities as provided
+by \ac{NFQL} and is therefore used as a reference point to compare the
+performance of the \ac{NFQL} execution engine in this paper. The design and
+implementation of SiLK, however, differs a lot from that of \ac{NFQL}.For
+instance, in SiLK there are separate tools to perform the task of each stage
+of the \ac{NFQL} processing pipeline. The stage functionality is not
+full-fledged though. The grouping and merging operations can only be performed
+using an equality operator. This is assumed in the tool, thereby allowing it
+to perform optimization such as using hash tables to perform lookups. There
+are also stringent requirements to how flow-data needs to be organized before
+it can be piped into a tool. The grouping tool, for instance, assumes that the
+to-be supplied input flow data is already sorted on the field column.  These
+requirements make it a little cumbersome to design a full-fledged flow query.
+For instance, trying to mimic a \ac{NFQL} query in SiLK ends up as a bash
+script with over a dozen of SiLK tools piped together.

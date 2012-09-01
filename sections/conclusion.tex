@@ -1,1 +1,12 @@
-The \ac{NFQL} conclusion goes here ...
+We presented \ac{NFQL}, an efficient C implementation of the stream-based flow
+query language. The language allows applying absolute (or relative) filters,
+aggregating flows into groups, evaluating intricate timing relationships among
+them, and merging them into one collection. \ac{NFQL} can execute such complex
+query tasks in matter of minutes, thereby expanding the scope of current flow
+record processing tools. The conducted performance evaluations reveal that
+\ac{NFQL} is on par with tools that support only absolute filters. SiLK, the
+only package that provides tools that are similar to the rest of \ac{NFQL}'s
+processing pipeline appears faster. This is because it can optimize its
+operations in favor of the limited set of comparisons that are only based on
+equality, and its usage of a proprietory file storage format.
+\todo{...}

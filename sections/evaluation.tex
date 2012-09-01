@@ -1,2 +1,184 @@
-performance evaluation goes here ...
+We used a public flow trace containing $20M$ records to run a number of flow
+queries using our benchmarking suite. We used trace $7$
+\footnote{\url{http://traces.simpleweb.org/traces/netflow/netflow1/netflow000.tar.bz2}},
+from Simpleweb \footnote{Simpleweb is a data repository of traffic traces from
+University of Twente}.  The input trace was compressed at \texttt{ZLIB\_LEVEL}
+$5$ using the \texttt{zlib} suite. It was also converted to \texttt{nfdump}
+and SiLK compatible formats and compressed with \texttt{zlib}
+keeping the same compression level.  The suite was run on a high-end
+machine\footnote{\url{crystal.eecs.jacobs-university.de}} with $24$ cores of
+$2.5$ GHz clock speed and $18$ GiB of memory.
 
+The first set of queries attempt to stress the filter stage.  We use varying
+values on the packet field offset to determine the amount of flow records that
+are passed by the filter. The resultant filtered records are written to
+\texttt{flow-tools} compatible file format and compressed at
+\texttt{ZLIB\_LEVEL} $5$ using \texttt{zlib} suite. The ratio of the number of
+filtered records in the output trace to the number of the flow records in the
+input trace is plotted against time. The evaluation results are shown in
+Fig. \ref{fig:benchmarks-filter}.
+
+\begin{figure}[h!]
+  \begin{center}
+    \includegraphics* [width=1.0\linewidth]{filter}
+    \caption{Filter Stage: NFQL vs SiLK, Flow-Tools, Nfdump}
+    \label{fig:benchmarks-filter}
+  \end{center}
+\end{figure}
+
+It can be seen that the performance of the filter stage in \ac{NFQL} is
+comparable to that of \texttt{flowtools} and SiLK. SiLK takes less time on
+lower ratios, but then again SilK and \texttt{nfdump} also use their own
+proprietary format for trace files. As a result, the amount of data that needs
+to read (or written) may be different to what it is for \ac{NFQL} and
+\texttt{flowtools}. On the other hand, \texttt{nfdump} appears to be
+significantly faster than the rest. This is because \texttt{nfdump} lacks
+\texttt{zlib} support, and as such the files that are read and written used
+\texttt{lzo} compression scheme which trades space for achieving faster
+compression and decompression. It is important to note, that all the tools
+were single-threaded in this evaluation, and did not completely utilize the
+$24$ cores that were at their disposal. It comes as a realization, that
+filtering the input using multiple threads by memory mapping the trace and
+adding \texttt{lzo} compression will drastically improve \ac{NFQL}'s filter
+performance.
+
+
+The second set of queries attempt to stress the grouper stage. We reuse the
+filter query that produces a $1.0$ ratio to allow the grouper to receive the
+entire trace as a filtered recordset. The grouper part of the query then
+gradually increases the number of grouping terms in the \ac{DNF} expression to
+increase the output/input ratio. The resultant groups are again written as
+\texttt{flowtools} files using the same \texttt{zlib} compression level. The
+ratio of the number of groups formed to the number of the input filtered
+records is plotted against time. \texttt{nfdump} and \texttt{flowtools} do not
+support grouping, and therefore are not considered in this evaluation. The
+evaluation results are shown in Fig. \ref{fig:benchmarks-grouper}.
+
+\begin{figure}[ht!]
+  \begin{center}
+    \includegraphics* [width=1.0\linewidth]{grouper}
+    \caption{Grouper Stage: NFQL vs SiLK}
+    \label{fig:benchmarks-grouper}
+  \end{center}
+\end{figure}
+
+The evaluation graph reveals that the performance of the \ac{NFQL} grouper
+stage is close. The time taken by the tools are comparable on lower ratios,
+but on higher ratios, \ac{NFQL} starts to drift apart. Since most of the time
+is taken in writing the records to files, it is unclear whether SiLK's usage
+of a proprietary format which may reduce reads/writes is responsible for the
+drift on higher ratios. SiLK's \texttt{rwgroup} tool is also supplied a
+\texttt{--summarize} flag in all the queries. This gives SiLK the leverage to
+not store information about which members are part of the group.  \ac{NFQL} on
+the other hand needs to allocate resources (which may take time) to keep this
+information in its data structures, since the ungrouper later may request to
+write the members of a group while unfolding the tuples. It is also important
+to note that both the tools again remained single-threaded throughout the
+evaluation. SiLK took an advantage of an inherent concurency arising from how
+the query is structured as one single \texttt{bash} script using pipes. The
+pipe between \texttt{rwsort} and \texttt{rwgroup} makes the two process run
+concurrently, the effect of which gets more pronounced on higher ratios and
+can be a drift determining factor.  The profiling results from GNU
+\texttt{gprof} \cite{graham:1982} indicate that $60\%$ of the time is taken in
+\texttt{qsort} comparator calls.  As a result, it comes as no surprise, that
+bifurcating \texttt{qsort} invocation to multiple threads and later merging
+the results back using merge sort will help parallelize the grouper stage and
+maybe reduce the drift on higher ratios. In addition, since all of the
+evaluation queries had grouping terms using an equality comparator, \ac{NFQL}
+can introspect such a grouping rule to dynamically optimize processing
+searches using a hashtable and turn to \texttt{qsort} based grouping only as a
+fallback.
+
+The third set of queries attempt to stress the group filter stage. We reuse
+the filter and grouper queries that produce a $1.0$ ratio to allow the group
+filter to receive the entire trace as input. This means, each flow record of
+the original trace now becomes a group record for the group filter.  The group
+filter then reuses the same varying values of the packet offset to determine
+the amount of groups that are filtered ahead. The filtered groups are again
+written as \texttt{flowtools} files using the same \texttt{zlib} compression
+level. The ratio of the number of filtered groups formed to the number of the
+input group records is plotted against time. The evaluation results are shown
+in Fig. \ref{fig:benchmarks-groupfilter}.
+
+\begin{figure}[ht!]
+  \begin{center}
+    \includegraphics* [width=1.0\linewidth]{groupfilter}
+    \caption{Group Filter Stage: NFQL vs SiLK}
+    \label{fig:benchmarks-groupfilter}
+  \end{center}
+\end{figure}
+
+It can be seen that the timings of \ac{NFQL} are far apart from that of SiLK.
+It is due to the drift already created by the grouper at $1.0$ ratio in the
+previous stage. As a result, the group filter comes into play only after $300$
+seconds, whereas SiLK's group filtering already starts just below $150$
+seconds. Even if we normalize the graph, it can be observed that the group
+filter has a significantly higher slope. This is because it is only executed
+once the grouper returns, and therefore has to reiterate the groups to make a
+filtering decision.
+
+The fourth set of queries attempt to stress the merger stage. We reuse the
+filter, grouper and group filter queries that produce a $1.0$ ratio. These
+queries are then run in two separate branches to produce identical filtered
+group records.  The merger then applies match rules to produce different
+output to input ratios. The groups that are merged are again written as
+\texttt{flowtools} files using the same \texttt{zlib} compression level. The
+ratio of the number of merged groups to twice\footnote{Each branch pushes the
+entire trace as an input to the merger.} the number of flow records in the
+original trace is plotted against time. A data point for SiLK for the $0.2$
+ratio is not available since the \ac{NFQL} query executed at that data point
+uses \texttt{OR} expressions which are not supported by SiLK. As a result, an
+equivalent SiLK query is not formulated.
+
+\begin{figure}[ht!]
+  \begin{center}
+    \includegraphics* [width=1.0\linewidth]{merger}
+    \caption{Merger Stage}
+    \label{fig:benchmarks-merger}
+  \end{center}
+\end{figure}
+
+It can be seen that the merger is the most performance hit and time consuming
+stage of the \ac{NFQL} pipeline thus far. It is due to the fact that the
+merger is working on twice the number of flow records than any other previous
+stage. In addition, each branch is writing the results of the filter, grouper
+and group filter stage to \texttt{flowtools} files. As a result, the amount of
+disk I/O involved is twice as much as well. Even though each branch is
+delegated to a separate core using affinity masks, most of time is taken in
+writing these results to the file. These results although look less promising,
+they are way better than the previous merger implementation. The newer merger
+takes advantage of sorted nature of filtered groups and therefore can
+signifantly reduce the number of merger matches. It also writes a merged group
+record to file only once despite the number of times it has matched. Without
+these optimizations, running such queries on the merger would keep the CPU
+churning for days without results.
+
+The last set of queries attempt to stress the ungrouper stage. They reuse the
+entire merger queries as is, but enable the ungrouper now as well. This means,
+that the ungrouper now attempts to unfold the merged groups returned by the
+merger to write their member flow records to \texttt{flowtools} files.
+However, since the merger receives each flow record as its own filtered group,
+each merged group has only one member. As a result, the ungrouper ends up
+executing its logic and rewriting the merged groups as \texttt{flowtools}
+files using the using the same \texttt{zlib} compression level. The ratio of
+the number of result flow records to twice the number of the flow records in
+the input trace is plotted against time. The evaluation results are shown in
+Fig. \ref{fig:benchmarks-ungrouper}.
+
+\begin{figure}[h!]
+  \begin{center}
+    \includegraphics* [width=1.0\linewidth]{ungrouper}
+    \caption{Ungrouper Stage}
+    \label{fig:benchmarks-ungrouper}
+  \end{center}
+\end{figure}
+
+It can be seen that the evaluation behavior is similar to that shown by the
+merger, but is just more involved. This is because the ungrouper also has to
+write the entire merged groupset to file, as is done by merger. This is the
+reason for the execution engine in taking twice the amount of time. In fact,
+this evaluation is performed only to stress the functioning of the ungrouper
+and running queries that merge each filtered group filtered individually is
+less useful in practise. Ideally, the execution engine must shutdown the
+ungrouper if the merger merges every filtered group record in its output. This
+is because, such a behavior implicitly eliminates the need of the ungrouper.
