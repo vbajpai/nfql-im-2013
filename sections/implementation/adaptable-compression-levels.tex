@@ -1,10 +1,10 @@
 The flow-records echoed to the standard output can also be written to a
-Netflow $v5$ flow-tools file. The \texttt{--dirpath} switch allows one to
-provide a directory path where the results can be stored.  Each stream is
-stored as its own file with an ID to disambiguate it. Results from each stage
-of the pipeline can also be written to separate files with the increase in the
-verbosity level. In fact, \texttt{--dirpath} and \texttt{--verbose} work well
-together to adjust the level at which the writes are to be made.
+Netflow $v5$ \texttt{flow-tools} file. The \texttt{--dirpath} switch allows
+one to provide a directory path where the results can be stored.  Each stream
+is stored as its own file with an ID to disambiguate it. Results from each
+stage of the pipeline can also be written to separate files with the increase
+in the verbosity level. In fact, \texttt{--dirpath} and \texttt{--verbose}
+work well together to adjust the level at which the writes are to be made.
 
 \begin{figure}[h!]
   \begin{center}
@@ -15,11 +15,11 @@ together to adjust the level at which the writes are to be made.
 \end{figure}
 
 The engine uses the \texttt{zlib} \cite{rfc1950} software library to compress
-the results written to the flow-tools files. \texttt{zlib} supports $9$
-compression levels with $9$ being the highest. The \ac{NFQL} engine supports
-\texttt{--zlevel} switch to allow the user to supply its desired choice of the
-of the compression level. A default level of $5$ is used for writes if the
-switch is not supplied during runtime.  Fig. \ref{fig:engine-zlevel} shows
-the time taken to write a sample of records passing the filter stage for each
-\texttt{z-level}. It goes to show that each level adds its own performance
-overhead and must be used with discretion.
+the results written to the \texttt{flow-tools} files. \texttt{zlib} supports
+$9$ compression levels with $9$ being the highest. The \ac{NFQL} engine
+supports \texttt{--zlevel} switch to allow the user to supply its desired
+choice of the of the compression level. A default level of $5$ is used for
+writes if the switch is not supplied during runtime.  Fig.
+\ref{fig:engine-zlevel} shows the time taken to write a sample of records
+passing the filter stage for each \texttt{z-level}. It goes to show that each
+level adds its own performance overhead and must be used with discretion.

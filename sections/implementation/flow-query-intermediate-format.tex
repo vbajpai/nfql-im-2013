@@ -1,30 +1,67 @@
-The \ac{NFQL} execution engine reads the flow query at runtime in a
-\texttt{JSON} intermediate format. The entire flow query is a collection of
-\ac{DNF} expression. A \ac{DNF} expression is a disjunction of conjunctive
-clauses. The elements of the conjuctive clauses are terms. The clauses in the
-\ac{DNF} are OR'd together, while the terms in each clauses themselves are
-AND'd. The branchsets and each \ac{DNF} expression of the pipeline stage is a
-\texttt{JSON array}. \texttt{json-c}\footnote{\url{http://oss.metaparadigm.com/json-c/}} is used to
-parse the flow query file, and python scripts have been written to quickly
-serialize the python pipeline objects to a \texttt{JSON} query.
+The entire JSON flow query is a collection of \ac{DNF} expressions. A \ac{DNF}
+expression is a disjunction of conjunctive clauses. The elements of the
+conjuctive clauses are terms. The clauses in the \ac{DNF} are OR'd together,
+while the terms in each clause themselves are AND'd. The branchsets and each
+\ac{DNF} expression of the pipeline stage is a \texttt{JSON array}.
+\texttt{json-c} \cite{jsonc} is used to parse the flow query file. The
+pipeline stages of the flow query language are also encapsulated in Python
+classes and scripts have been written to facilitate the front-end parser to
+serialize these pipeline objects to a \texttt{JSON} flow query.  The mapping
+of the query to the structs defined in the execution engine is
+not trivial. When reading the \texttt{JSON} query at runtime, the field
+offsets of the NetFlow $v5$ record struct are read in as strings.  Utility
+functions are defined that map the read field names to struct offsets and
+field types and the operations to unique enum members.
+
+The abstract objects that store the JSON query and the results that incubate
+from each stage are designed to be self-descriptive and hierarchically
+chainable.  The complete JSON query information for instance, is held within
+the \texttt{flowquery} struct as shown in listing \ref{lst:struct}. Each
+individual branch of the flowquery itself is described in a \texttt{branch}
+struct.
+
+\lstset{caption=Flow Query and Branch Structs,
+				tabsize=2, language=C, numbers=left,stepnumber=1,
+        basicstyle=\tiny\ttfamily, numberstyle=\ttfamily\color{gray},
+        keywordstyle=\color{blue}, xleftmargin=15pt,
+        rulesepcolor=\color{black}, label=lst:struct,
+        aboveskip=10pt, captionpos=b}
+\begin{lstlisting}
+struct flowquery {
+  size_t                                      num_branches;
+  size_t                                      num_merger_clauses;
+
+  struct branch**                             branchset;
+  struct merger_clause**                      merger_clauseset;
+  struct merger_result*                       merger_result;
+  struct ungrouper_result*                    ungrouper_result;
+};
+
+struct branch {
+  int                                         branch_id;
+  struct ftio*                                ftio_out;
+  struct ft_data*                             data;
+
+  size_t                                      num_filter_clauses;
+  size_t                                      num_grouper_clauses;
+  size_t                                      num_aggr_clause_terms;
+  size_t                                      num_groupfilter_clauses;
+
+  struct filter_clause**                      filter_clauseset;
+  struct grouper_clause**                     grouper_clauseset;
+  struct aggr_term**                          aggr_clause_termset;
+  struct groupfilter_clause**                 groupfilter_clauseset;
+
+  struct filter_result*                       filter_result;
+  struct grouper_result*                      grouper_result;
+  struct groupfilter_result*                  gfilter_result;
+};
+\end{lstlisting}
 
 The \texttt{JSON} query can also trigger and disable the stages at runtime.
 This means that one only has to supply the constructs that one wishes to use.
 The constructs that are not defined in the \texttt{JSON} query are inferred by
 the execution engine as a disable request. The execution engine uses disable
-flags that are turned on when the \texttt{JSON} query is parsed. These flags
-are used throughout the engine to only enable the requested functionality.
+flags that are turned on when the query is parsed. These flags are used
+throughout the engine to only enable the requested functionality.
 
-The mapping of the \texttt{JSON} query to the structs defined in the execution
-engine is not trivial. When reading the \texttt{JSON} query at runtime, the
-field offsets of the NetFlow $v5$ record struct are read in as strings.
-Utility functions are defined that maps the read names to struct offsets and
-read type of each offset and the operations to unique \texttt{enum} members.
-
-The abstract objects that store the JSON query and the results that incubate
-from each stage are designed to be self-descriptive and hierarchically
-chainable. The complete JSON query information for instance, is held within
-the \texttt{flowquery} struct. Each individual branch of the flowquery itself
-is described in a \texttt{branch} struct. A collection of these
-\texttt{branch} structs are referenced in the parent \texttt{flowquery}
-struct.

@@ -1,4 +1,4 @@
-There can be a situtation where the query designer may incorrectly ask for
+There can be a situation where the query designer may incorrectly ask for
 aggregation on a field already specified in a grouper (or filter) clause. If
 the relative operator is an equality comparison, the aggregation on such a
 field becomes less useful, since the members of the grouped record will always
@@ -16,26 +16,19 @@ the computation time wasted in setting the function pointer for stage if it is
 is never executed.
 
 \ac{NFQL} pushes the filter stage out of the branch and closer to where the
-trace is originally read. This enables the memory allocation of only records
-that passed the filter stage thereby reducing the runtime memory footprint of
-the execution engine.
-
-Each branch runs in its own thread. If any of the stages of the branch return
-a \texttt{NULL} when returning from their public interface function, there is
-no reason to continue the thread. The subsequent stages of the branch cannot
-do much with a \texttt{NULL} result.  Therefore, the branch thread returns
-with a \texttt{EXIT\_FAILURE} if either stage returns \texttt{NULL}, and with
-\texttt{EXIT\_SUCCESS} on normal exit.
+trace is originally read. This reduces the memory allocation to only records
+that passed the filter stage thereby reducing the memory footprint of the
+execution engine.
 
 Each stage of the processing pipeline is dependent on the result of the
-previous one. As a result, the stages should only proceed and process, when
-the previous returned results. Implementing such a response was
-straightforward for the grouper and group filter, the merger although was a
-little trickier.  The merger stage proceeds only when every branch has
-non-zero filtered groups.  The iterator initializer
-\texttt{iter\_init(\ldots)} deallocates and returns \texttt{NULL} if any one
-branch has $0$ filtered groups.  Consequently a check is performed in the
-merger to make sure \texttt{iter} is \emph{not} \texttt{NULL}.
+previous one. As a result, the stages should only proceed, when the previous
+returned results. Implementing such a response was straightforward for the
+grouper and group filter, the merger although was a little trickier.  The
+merger stage proceeds only when every branch has non-zero filtered groups.
+The iterator initializer \texttt{iter\_init(\ldots)} deallocates and returns
+\texttt{NULL} if any one branch has $0$ filtered groups.  Consequently a check
+is performed in the merger to make sure \texttt{iter} is \emph{not}
+\texttt{NULL}.
 
 The results from each stage of the pipeline are echoed to the standard output
 just before the execution engine exits. This leads to an additional loop to
