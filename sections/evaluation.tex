@@ -1,11 +1,10 @@
 We used a public flow trace containing $20M$ records to run a number of flow
-queries using our benchmarking suite. We used trace $7$
-\footnote{\url{http://traces.simpleweb.org/traces/netflow/netflow1/netflow000.tar.bz2}},
-from Simpleweb \footnote{Simpleweb is a data repository of traffic traces from
-University of Twente}.  The input trace was compressed at \texttt{ZLIB\_LEVEL}
-$5$ using the \texttt{zlib} suite. It was also converted to \texttt{nfdump}
-and SiLK compatible formats and compressed with \texttt{zlib}
-keeping the same compression level.  The suite was run on a high-end
+queries using our benchmarking suite. We used the publically available Trace 7
+from SimpleWeb \cite{simpleweb} repository for all the performance
+evaluations. The input trace was compressed at \texttt{ZLIB\_LEVEL} $5$ using
+the \texttt{zlib} suite. It was also converted to \texttt{nfdump} and SiLK
+compatible formats and compressed with \texttt{zlib} keeping the same
+compression level. The suite was run on a high-end
 machine\footnote{\url{crystal.eecs.jacobs-university.de}} with $24$ cores of
 $2.5$ GHz clock speed and $18$ GiB of memory.
 

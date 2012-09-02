@@ -1,6 +1,8 @@
-\texttt{tcpdump} and \texttt{wireshark} are the most popular tools used for
-packet capture and analysis. \texttt{tcpdump} \cite{tcpdump-manpage} is a
-premier command-line utility that uses the \texttt{libpcap}
+The study of the network traffic patterns began with tools that utilized raw
+packet captures at the monitoring point for traffic measurement.
+\texttt{tcpdump} and \texttt{wireshark} have since then become the de-facto
+tools for packet capture and analysis. \texttt{tcpdump} \cite{tcpdump-manpage}
+is a premier command-line utility that uses the \texttt{libpcap}
 \cite{pcap-manpage} library for packet capture. The power of \texttt{tcpdump}
 comes from the richness of its expressions, the ability to combine them using
 logical connectives and extract specific portions of a packet using filters.
@@ -9,24 +11,25 @@ both journeymen and packet analysis experts. It supports a large number of
 protocols, has a straightforward layout, excellent documentation, and can run
 on all major operating systems.
 
-\texttt{flow-tools} \cite{sromig:2000} is a suite of programs for capturing
-and processing NetFlow v5 flow records. It consists of 24 separate tools that
-work together by connecting them via UNIX pipes. \todo{...}
-
-\texttt{nfdump} \cite{phaag:2006} works similar to flow-tools but uses a
+In recent years, a number of tools have been developed that can capture the
+traffic as flow records and use them for network analysis. \texttt{flow-tools}
+and \texttt{nfdump} are one of the most popular tools used for analyzing
+NetFlow data. \texttt{flow-tools} \cite{sromig:2000} is a suite of programs
+for capturing and processing NetFlow v5 flow records. It consists of 24
+separate tools that work together by connecting them via UNIX pipes. It can
+capture, read, filter, and print flow records internally saved in a fixed-size
+format. \texttt{nfdump} \cite{phaag:2006} is a very similar tool that uses a
 different storage format. Flow records are captured using \texttt{nfcapd} and
-then processed by \texttt{nfdump} which can filter as well as display the
-sorted and filtered result. The power of its filtering rules is similar to
-that of flow-tools and as such is mostly limited to absolute comparisons of
-flow attributes.
-
-SiLK\footnote{\url{http://tools.netsa.cert.org/silk/}} is a network traffic
-collection and analysis tool developed and maintained by the CERT Network
-Situational Awareness Team (CERT NetSA) at Carnegie Mellon University. SiLK is
-the tool that comes quite close to providing similar capabilities as provided
-by \ac{NFQL} and is therefore used as a reference point to compare the
-performance of the \ac{NFQL} execution engine in this paper. The design and
-implementation of SiLK, however, differs a lot from that of \ac{NFQL}.For
+then processed by \texttt{nfdump}. The power of filtering rules in both the
+tools is however mostly limited to absolute comparisons of flow attributes. As
+a result, relative comparison amongst different flows or querying a timing
+relationship among them is not possible.  SiLK \cite{SiLK} is a network
+traffic collection and analysis tool developed and maintained by the CERT
+Network Situational Awareness Team (CERT NetSA) at Carnegie Mellon University.
+SiLK is the tool that comes quite close to providing similar capabilities as
+provided by \ac{NFQL} and is therefore used as a reference point to compare
+the performance of the \ac{NFQL} execution engine in this paper. The design
+and implementation of SiLK, however, differs a lot from that of \ac{NFQL}. For
 instance, in SiLK there are separate tools to perform the task of each stage
 of the \ac{NFQL} processing pipeline. The stage functionality is not
 full-fledged though. The grouping and merging operations can only be performed

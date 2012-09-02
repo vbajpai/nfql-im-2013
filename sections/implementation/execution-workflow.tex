@@ -41,11 +41,10 @@ reading-filtering-writing to happen in $O(n)$ time, where $n$ is the number of
 records in the trace. It is important to note that the filtered records are
 saved in common location from where they are referenced by each branch. This
 helps keep the memory costs at a minimum when multiple branches are involved.
-A publically available Netflow $v5$ trace
-\footnote{\url{http://traces.simpleweb.org/traces/netflow/netflow1/netflow000.tar.bz2}}
-was used to compare the performance of the new filter in F$(v2)$ with that
-from F$(v1)$ as shown in Fig. \ref{fig:fv1-fv2-filter}. The trace has around
-$20M$ flow-records.
+We used the publically available Trace 7 from the SimpleWeb \cite{simpleweb}
+to compare the performance of the new filter in F$(v2)$ with that from F$(v1)$
+as shown in Fig. \ref{fig:fv1-fv2-filter}. The trace has around $20M$
+flow-records.
 
 \subsubsection{Grouper}
 

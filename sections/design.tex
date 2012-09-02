@@ -1,51 +1,46 @@
-The pipeline consists of a number of independent processing elements that are
-connected to one another using UNIX-based pipes. Each element receives the
-content from the previous pipe, performs an operation and pushes it to the
-next element in the pipeline. Fig. \ref{fig:nfql-pipeline} shows an
-overview of the processing pipeline. A complete description on the semantics
-of each element in the pipeline can be found in \cite{vmarinov:2009}
+The flow query language pipeline consists of a number of independent elements
+that are connected to one another using UNIX-based pipes.  Each element
+receives the content from the previous pipe, performs an operation and pushes
+it to the next element in the pipeline as shown in Fig.
+\ref{fig:nfql-pipeline}. A complete description on the semantics of each
+element in the pipeline can be found in \cite{vmarinov:2009}
 
-The splitter takes the flow-records data as input in the \texttt{flow-tools}
-compatible format. It is responsible to duplicate the input data out to
-several branches without any processing whatsoever. This
-allows each of the branches to have an identical copy of the flow data to
-process it independently.
+The pipeline starts with the splitter. It takes the flow-records data as input
+in the \texttt{flow-tools} compatible format. The splitter is responsible to
+duplicate the input data out to several branches without any processing
+whatsoever. This allows each of the branch to receive an identical copy of the
+flow data to process it independently.
 
-The filter performs \emph{absolute} filtering on the input flow-records data.
-The flow-records that pass the filtering criterion are forwarded to the
-grouper, the rest of the flow-records are dropped. The
-filter compares separate fields of a flow-record against either a constant
-value or a value on a different field of the \emph{same} flow-record. The
-filter cannot \emph{relatively} compare two different incoming flow-records
+The filter is the first processing element of a branch in the pipeline.  It
+performs \emph{absolute} filtering on the input flow-records data.  The
+flow-records that pass the filtering criterion are forwarded to the grouper,
+the rest of the flow-records are dropped. The filter compares separate fields
+of a flow-record against either a constant value or a value on a different
+field of the \emph{same} flow-record. The filter cannot \emph{relatively}
+compare two different incoming flow-records
 
 The grouper performs aggregation of the input flow-records data. It consists
-of a number of rule modules that correspond to a specific subgroup. A
-flow-record in order to be a part of the group should be a part of at-least
-one subgroup. A flow-record can be a part of multiple subgroups within a
-group. A flow-record cannot be part of multiple groups.
-The grouping rules can be either absolute or relative. The newly formed groups
-which are passed on to the group filter can also contain meta-information
-about the flow-records contained within the group using the aggregate clause
-defined as part of the grouper query.
+of a number of terms that correspond to a specific subgroup. A flow-record in
+order to be a part of the group should satisfy at-least one subgroup. A
+flow-record can be a part of multiple subgroups within a group. A flow-record
+cannot be part of multiple groups.  The grouping rules can be either absolute
+or relative. The newly formed groups which are passed on to the group filter
+can also contain meta-information about the flow-records contained within the
+group using the aggregate clause defined as part of the grouper query.
 
-The group-filter performs \emph{absolute} filtering on the input group-records
-data. The group-records that pass the filtering criterion are forwarded to the
-merger, the rest of the group-records are dropped. The group-filter compares
-separate fields (or aggregated fields) of a
-flow-record against either a constant value or a value on a different field of
-the \emph{same} flow-record. The group-filter cannot \emph{relatively} compare
-two different incoming group-records
+The group-filter is the last processing element of the branch. It performs
+\emph{absolute} filtering on the input group-records data. The group-records
+that pass the filtering criterion are forwarded to the merger, the rest of the
+group-records are dropped. The group-filter compares separate fields (or
+aggregated fields) of a flow-record against either a constant value or a value
+on a different field of the \emph{same} flow-record. The group-filter cannot
+\emph{relatively} compare two different incoming group-records.
 
 The merger performs relative filtering on the N-tuples of groups formed from
-the N stream of groups passed on from the group-filter as input. The merger
-rule module consists of a number of a submodules, where the output of the
-merger is the set difference of the output of the first
-submodule with the union of the output of the rest of the submodules. The
-relative filtering on the groups are applied to express timing and concurrency
-constraints using Allen interval algebra \cite{fallen:1983}
-
-The ungrouper unwraps the tuples of group-records into individual
-flow-records, ordered by their timestamps. The duplicate
-flow-records appearing from several group-records are eliminated and are sent
-as output only once.
-
+the N stream of groups passed on from the group-filter as input. The relative
+filtering on the groups are applied to express timing and concurrency
+constraints using Allen interval algebra \cite{fallen:1983}. The ungrouper is
+the final processing element of the pipeline. It unwraps the tuples of
+group-records into individual flow-records, ordered by their timestamps. The
+duplicate flow-records appearing from several group-records are eliminated and
+are sent as output only once.
