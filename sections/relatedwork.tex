@@ -1,18 +1,5 @@
-%The study of the network traffic patterns began with tools that utilized raw
-%packet captures at the monitoring point for traffic measurement.
-%\texttt{tcpdump} and \texttt{wireshark} have since then become the de-facto
-%tools for packet capture and analysis. \texttt{tcpdump} \cite{tcpdump-manpage}
-%is a premier command-line utility that uses the \texttt{libpcap}
-%\cite{pcap-manpage} library for packet capture. The power of \texttt{tcpdump}
-%comes from the richness of its expressions, the ability to combine them using
-%logical connectives and extract specific portions of a packet using filters.
-%\texttt{wireshark} \cite{wireshark-manpage} is a GUI application, aimed at
-%both journeymen and packet analysis experts. It supports a large number of
-%protocols, has a straightforward layout, excellent documentation, and can run
-%on all major operating systems.
-
 In recent years, a number of tools have been developed that can capture the
-traffic as flow records and use them for network analysis.Simple analysis of
+traffic as flow records and use them for network analysis. Simple analysis of
 network traffic can be done by a range of graphical utilities like ntop
 \cite{ntop:2000}, FlowScan \cite{flowscan:2000}, NfSen \cite{phaag:2006} and
 Stager \cite{oslebo:2006}. All these tools understand the NetFlow format while
@@ -37,17 +24,17 @@ querying a timing relationship among them is not possible.
 SiLK \cite{SiLK} is a network traffic collection and analysis tool developed
 and maintained by the CERT Network Situational Awareness Team (CERT NetSA) at
 Carnegie Mellon University.  SiLK is the tool that comes quite close to
-providing similar capabilities as provided by \ac{NFQL} and is therefore used
-as a reference point to compare the performance of the \ac{NFQL} execution
-engine in this paper. The design and implementation of SiLK, however, differs
-a lot from that of \ac{NFQL}. For instance, in SiLK there are separate tools
-to perform the task of each stage of the \ac{NFQL} processing pipeline. The
-stage functionality is not full-fledged though. The grouping and merging
-operations can only be performed using an equality operator. \ac{NFQL} on the
-other hand, provides a much richer set of comparisons operations, such as
-\emph{equal, not equal, greater than, less than, greater or equal, less or
-equal}. This restriction allows the tool to perform optimization such as using
-hash tables to perform lookups.  There are also stringent requirements to how
+providing similar capabilities as \ac{NFQL} and is therefore used as a
+reference point to compare the performance of the \ac{NFQL} execution engine
+in this paper. The design and implementation of SiLK, however, differs a lot
+from that of \ac{NFQL}. For instance, in SiLK there are separate tools to
+perform the task of each stage of the \ac{NFQL} processing pipeline. The stage
+functionality is not full-fledged though. The grouping and merging operations
+can only be performed using an equality operator. This restriction allows the
+tool to perform optimization such as using hash tables to perform lookups.
+\ac{NFQL} on the other hand, provides a much richer set of comparisons
+operations, such as \emph{equal, not equal, greater than, less than, greater
+or equal, less or equal}. There are also stringent requirements to how
 flow-data needs to be organized before it can be piped into a tool. The
 grouping tool, for instance, assumes that the to-be supplied input flow data
 is already sorted on the field column.  These requirements can make it a

@@ -25,16 +25,16 @@ struct ft_data {
 };
 \end{lstlisting}
 
-A sample JSON query \ac{DNF} term definition is shown in listing
-\ref{lst:filter-struct}. In order to be able to make comparisons on the field
-offsets of such a term, the comparator needs to know the type of the
-comparison and the length of the field offset. This information is parsed by
-execution engine once the query is read and is therefore not available at
-compile time.  In order to subvert the need to define complex branching
-statements, a dedicated comparator is defined for every possible field length
-and comparison operation. These comparators are generated using a Python
-script. This allows the term definitions to make runtime calls using a
-function name derived from the combination of operation type and field length.
+In order to be able to make comparisons on the field offsets of such a term,
+the comparator needs to know the type of the comparison and the length of the
+field offset. This information is parsed by execution engine once the query is
+read and is therefore not available at compile time.  In order to subvert the
+need to define complex branching statements, a dedicated comparator is defined
+for every possible field length and comparison operation. A Python script
+generates C source code for these comparators at compile time conforming to
+the structure shown in listing \ref{filter-struct}. This allows the term
+definitions to make runtime calls using a function name derived from the
+combination of operation type and field length.
 
 \lstset{caption=Filter Term Struct,
 				tabsize=2, language=C, numbers=left,stepnumber=1,
@@ -119,7 +119,7 @@ step taking $O(p*n*lg(n))$ in the average case, where $n$ is the number of
 filtered records, $p$ is the number of grouping terms in a clause and $k$ is
 the number of unique filtered records.
 
-\begin{figure}[h!]
+\begin{figure}[ht!]
   \begin{center}
     \includegraphics*[width=0.9\linewidth]{grouper-fv2-bsearch-fv2}
     \caption{Grouper Stage: NFQL (Generic) vs NFQL (Specific)}

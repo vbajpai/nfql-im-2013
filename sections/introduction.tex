@@ -3,38 +3,26 @@ in network and user behavioral patterns of the traffic crossing the internet
 backbone. They want to use this information for the purpose of billing and
 mediation, bandwidth provisioning, detecting malicious attacks, network
 performance evaluation and overall improvement. Traffic measurement techniques
-that have been rapidly evolving in the last decade, have matured enough today
+that have been rapidly evolving in the last decade have today matured enough
 to provide such an insight.
 
 Capturing network flow records has emerged out to be one of the favored
 network measurement techniques. In this technique, packets traversing an
-obvervation point are not captured raw, instead they are aggregated together
-based on some common characteristics. The common characteristics are learnt by
-inspecting the packet headers as they cross the observation point.
-Flow-records resulting from such an aggregation are then exported to a
-collector for further analysis. This reduces the amount of traffic aggregated
+obvervation point are not captured raw, instead common characteristics of the
+packet header are aggregated into flow records. They are then exported to a
+collector for further analysis.  This reduces the amount of traffic aggregated
 at the collector.
 
 NetFlow and \ac{IPFIX} are the two popular protocols for IP flow information
-export. NetFlow \cite{rfc3954} is a proprietary network protocol designed by
-Cisco Systems. It allows routers to generate and export flow records to a
-designated collector. NetFlow v$9$ provides flexibility of user-tailored
+export. NetFlow \cite{rfc3954} is a network protocol designed by Cisco
+Systems, which allows routers to generate and export flow records to a
+designated collector. NetFlow v$9$ provides flexibility through user-tailored
 export templates, \ac{MPLS} and IPv$6$ support and a larger set of flow keys.
-\ac{IPFIX} \cite{rfc5101} on the other hand is an open standard by IETF and
-deemed to be the logical successor of NetFlow v$9$ on which it is based. The
-novelty of the standard lies in its ability to describe record formats at
-runtime using templates based on an extensible and well-defined information
-model. The data transfer mechanism is also simplistic and extensible by being
-unidirectional and transport protocol agnostic.
-
-%The wide applicability of this approach is easily seen from the pervasive use
-%of flow records for a vibrant set of network analysis applications. For
-%instance, the authors in \cite{mkim:2004} use the flow characteristics in the
-%traffic pattern to formalize a detection function that maps traffic patterns
-%to different DoS attacks, whereas in \cite{sdominik:2010}, the authors
-%use the flow-record data to exploit timing characteristics of webmail clients
-%to classify features that could identify webmail traffic from any other
-%traffic running over HTTPS.
+\ac{IPFIX} \cite{rfc5101} on the other hand is an open standard by IETF based
+on NetFlow v$9$. The novelty of the standard lies in its ability to describe
+record formats at runtime using templates based on an extensible and
+well-defined information model. The data transfer mechanism is also simplistic
+and extensible by being unidirectional and transport protocol agnostic.
 
 The wide applicability of this approach is easily seen from the pervasive use
 of flow records for a vibrant set of network analysis applications. For
