@@ -1,10 +1,10 @@
-We used a public flow trace containing $20M$ records to run a number of flow
-queries using our benchmarking suite. We used a publically available Trace 7
-from the SimpleWeb \cite{simpleweb} repository for all the performance
+We used the first $20M$ records from a public flow trace to run a number of
+flow queries using our benchmarking suite. We used the publically available
+Trace 7 from the SimpleWeb \cite{simpleweb} repository for all the performance
 evaluations. The input trace was compressed at \texttt{ZLIB\_LEVEL} $5$ using
 the \texttt{zlib} suite. It was also converted to \texttt{nfdump} and SiLK
 compatible formats and compressed with \texttt{zlib} keeping the same
-compression level. The suite was run on a high-end machine with $24$ cores of
+compression level. The suite was run on a machine with $24$ cores of
 $2.5$ GHz clock speed and $18$ GiB of memory.
 
 The first set of queries attempt to stress the filter stage.  We use varying
@@ -27,11 +27,11 @@ against time. The evaluation results are shown in Fig.
 It can be seen that the performance of the filter stage in \ac{NFQL} is
 comparable to that of \texttt{flowtools} and SiLK. SiLK takes less time on
 lower ratios, but then again SilK and \texttt{nfdump} also use their own file
-format. As a result, the amount of data that needs to read (or written) may be
-different to what it is for \ac{NFQL} and \texttt{flowtools}.  On the other
-hand, \texttt{nfdump} appears to be significantly faster than the rest. This
-is because \texttt{nfdump} lacks \texttt{zlib} support, and as such the files
-that are read and written used \texttt{lzo} compression scheme. It is
+format. As a result, the amount of data that needs to be read (or written) may
+be different to what it is for \ac{NFQL} and \texttt{flowtools}.
+\texttt{nfdump} appears to be significantly faster than the rest. This is
+because \texttt{nfdump} lacks \texttt{zlib} support, and as such the files
+that are read and written use the \texttt{lzo} compression scheme. It is
 important to note, that all the tools were single-threaded in this evaluation,
 and did not completely utilize the $24$ available cores. It comes as a
 realization, that adding \texttt{lzo} compression will drastically improve
@@ -60,9 +60,9 @@ The evaluation graph reveals that the performance of the \ac{NFQL} grouper
 stage is close to the performance of SiLK. The time taken by the tools are
 comparable on lower ratios, but on higher ratios, \ac{NFQL} starts to drift
 apart. Since most of the time is taken in writing the records to files, it is
-unclear whether SiLK's usage of a proprietary format, which may reduce
-reads/writes is responsible for the drift on higher ratios. SiLK's
-\texttt{rwgroup} tool is also supplied a \texttt{--summarize} flag to force it
+unclear whether SiLK's usage of its own file format, which may reduce
+reads/writes, is responsible for the drift on higher ratios. SiLK's
+\texttt{rwgroup} tool is also supplied a \texttt{-{}-summarize} flag to force it
 to write only the first record of each group, to make both tools write the
 same number of records to files. This gives SiLK the leverage to not store
 information about which members are part of the group. \ac{NFQL} on the other
@@ -123,7 +123,7 @@ ratio of the number of merged groups to twice\footnote{Each branch pushes the
 entire trace as an input to the merger.} the number of flow records in the
 original trace is plotted against time. A data point for SiLK for the $0.2$
 ratio is not available since the \ac{NFQL} query executed at that data point
-uses \texttt{OR} expressions which are not supported by SiLK. As a result, an
+uses \texttt{OR} expressions, which are not supported by SiLK. As a result, an
 equivalent SiLK query is not formulated.
 
 \begin{figure}[ht!]
@@ -144,8 +144,8 @@ separate core using affinity masks, most of time is taken in writing these
 results to the file. These results although look less promising, they are way
 better than the original \ac{NFQL} merger implementation. The optimized merger
 implementation takes advantage of sorted nature of filtered groups and
-therefore can signifantly reduce the number of merger matches. It also writes
-a merged group record to file only once despite the number of times it has
+therefore can significantly reduce the number of merger matches. It also writes
+a merged group record to a file only once despite the number of times it has
 matched. Without these optimizations, running such queries on the merger would
 keep the CPU churning for days without results.
 
@@ -169,9 +169,9 @@ against time. The evaluation results are shown in Fig.
   \end{center}
 \end{figure}
 
-It can be seen that the evaluation behavior of the ungrouper is similar to
-that shown by the merger. Since, the ungrouper also has to write the entire
-merged groupset to file, as is previously done by merger, the execution engine
-takes twice the amount of time. It is important to note, that SiLK does not
-have such an equivalent ungrouping tool is therefore not considered in
-this final evaluation.
+It can be seen that the behavior of the ungrouper is similar to that shown by
+the merger. Since, the ungrouper also has to write the entire merged groupset
+to files, as is previously done by merger, the execution engine takes twice the
+amount of time. It is important to note, that SiLK does not have such an
+equivalent ungrouping tool and is therefore not considered in this final
+evaluation.
