@@ -33,11 +33,11 @@ and implementation of SiLK, however, differs a lot from that of \ac{NFQL}. For
 instance, in SiLK there are separate tools to perform the task of each stage
 of the \ac{NFQL} processing pipeline. The stage functionality is not
 full-fledged though. The grouping and merging operations can only be performed
-using an equality operator. This is assumed in the tool, thereby allowing it
-to perform optimization such as using hash tables to perform lookups. There
-are also stringent requirements to how flow-data needs to be organized before
-it can be piped into a tool. The grouping tool, for instance, assumes that the
-to-be supplied input flow data is already sorted on the field column.  These
-requirements make it a little cumbersome to design a full-fledged flow query.
-For instance, trying to mimic a \ac{NFQL} query in SiLK ends up as a bash
-script with over a dozen of SiLK tools piped together.
+using an equality operator. This restriction allows the tool to perform
+optimization such as using hash tables to perform lookups. There are also
+stringent requirements to how flow-data needs to be organized before it can be
+piped into a tool. The grouping tool, for instance, assumes that the to-be
+supplied input flow data is already sorted on the field column.  These
+requirements can make it a little cumbersome to design a full-fledged flow
+query.  For instance, trying to mimic a \ac{NFQL} query in SiLK sometimes ends
+up as a shell script with over a dozen of SiLK tools piped together.
