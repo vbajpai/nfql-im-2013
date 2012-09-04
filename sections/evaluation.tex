@@ -156,22 +156,7 @@ merger to write their member flow records to \texttt{flowtools} files.
 However, since the merger receives each flow record as its own filtered group,
 each merged group has only one member. As a result, the ungrouper ends up
 rewriting the merged groups as \texttt{flowtools} files using the same
-\texttt{zlib} compression level. The ratio of the number of result flow
-records to twice the number of the flow records in the input trace is plotted
-against time. The evaluation results are shown in Fig.
-\ref{fig:benchmarks-ungrouper}.
-
-\begin{figure}[h!]
-  \begin{center}
-    \includegraphics* [width=0.9\linewidth]{ungrouper}
-    \caption{Ungrouper Stage}
-    \label{fig:benchmarks-ungrouper}
-  \end{center}
-\end{figure}
-
-It can be seen that the behavior of the ungrouper is similar to that shown by
-the merger. Since, the ungrouper also has to write the entire merged groupset
-to files, as is previously done by merger, the execution engine takes twice the
-amount of time. It is important to note, that SiLK does not have such an
-equivalent ungrouping tool and is therefore not considered in this final
-evaluation.
+\texttt{zlib} compression level. This means that the execution engine end up
+taking twice the amount of time than the merger. It is important to note, that
+SiLK does not have such an equivalent ungrouping tool and is therefore not
+considered in this final evaluation.
