@@ -27,14 +27,20 @@ runtime using templates based on an extensible and well-defined information
 model. The data transfer mechanism is also simplistic and extensible by being
 unidirectional and transport protocol agnostic.
 
-The wide applicability of this approach is easily seen from the pervasive use
-of flow records for a vibrant set of network analysis applications. For
-instance, the authors in \cite{mkim:2004} use the flow characteristics in the
-traffic pattern to formalize a detection function that maps traffic patterns
-to different DoS attacks, whereas in \cite{sdominik:2010}, the authors
-use the flow-record data to exploit timing characteristics of webmail clients
-to classify features that could identify webmail traffic from any other
-traffic running over HTTPS.
+%The wide applicability of this approach is easily seen from the pervasive use
+%of flow records for a vibrant set of network analysis applications. For
+%instance, the authors in \cite{mkim:2004} use the flow characteristics in the
+%traffic pattern to formalize a detection function that maps traffic patterns
+%to different DoS attacks, whereas in \cite{sdominik:2010}, the authors
+%use the flow-record data to exploit timing characteristics of webmail clients
+%to classify features that could identify webmail traffic from any other
+%traffic running over HTTPS.
+
+A survey by Sperotto \textit{et al.} \cite{sperotto:2010} gives an overview of
+how network flow analysis can be used to detect Denial of Service attacks,
+scans probing target systems and the target discovery phase of worms. In
+addition, a survey by Callado \textit{et al.} \cite{callado:2009} also lists
+behaviour analysis of Internet backbone traffic and general anomaly detection.
 
 Understanding intricate traffic patterns require sophisticated flow analysis
 tools that can mine flow records for such a usage.  Unfortunately current
