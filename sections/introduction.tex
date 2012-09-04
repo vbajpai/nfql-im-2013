@@ -55,15 +55,13 @@ and invoke Allen interval algebra rules \cite{fallen:1983}. The expressiveness
 of the language can be seen from \cite{vperelman:2011} where the authors
 formulate flow queries to identify flow signatures of popular applications.
 
-In this paper, we introduce \ac{NFQL}, an efficient C implementation of the
-flow query language. It is the next iteration of the first prototype
-implementation, Flowy \cite{kkanev:2010}, which was written in Python.
-\ac{NFQL}, however, is not just a reimplementation in a new language, but the
-inner workings have been reimagined to allow the execution engine to scale to
-real-world sized traces. This has been possible by replacing the performance
-critical stages of the pipeline with crispier algorithms that lower the
-execution times, making \ac{NFQL} comparable to contemporary flow analysis
-tools.
+Flowy \cite{kkanev:2010} was a first feature complete Python prototype of that
+flow query language. Due to performance problems, it was superseeded by a
+complete rewrite in C, called Flowy 2.0 \cite{jschauer:thesis:2011}. In this
+paper, we introduce \ac{NFQL} which extends on Flowy 2.0, making it more
+feature complete and optimizing its execution engine with crispier algorithms.
+We show that this iteration of our work is able to scale to real-world sized
+traces and has comparable execution times to contemporary flow analysis tools.
 
 The paper is organized as follows. In section \ref{sec:relatedwork} we survey
 the current state-of-the-art flow-processing tools and reason how \ac{NFQL} is
@@ -71,13 +69,13 @@ different from each one of them. In section \ref{sec:design} we describe the
 flow query language by discussing each stage of the processing pipeline. In
 section \ref{sec:implementation} we introduce the inner workings of \ac{NFQL}.
 It begins by providing an overview of the \ac{NFQL} architecture and the
-structure of the intermediate format used to exchange messages. The workflow
-of the execution engine is described next and is supplemented by a number of
-performance optimizations made to make the implementation scale. The section
-is followed by performance evaluations comparing \ac{NFQL} against
-contemporary flow processing tools alongwith with a discussion on its current
-limitation and future outlook in section \ref{sec:evaluation}, with conclusion
-in section \ref{sec:conclusion}.
+structure of the intermediate format used to exchange messages. The workflow of
+the execution engine is described next and is supplemented by a number of
+performance optimizations made to make the implementation scale. The section is
+followed by performance evaluations comparing \ac{NFQL} against contemporary
+flow processing tools alongwith with a discussion on its current limitation and
+future outlook in section \ref{sec:evaluation}, with conclusion in section
+\ref{sec:conclusion}.
 
 \begin{figure*}[!t]
 \centering
