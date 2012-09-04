@@ -26,7 +26,10 @@ flow-record, although, can be a part of multiple clauses, it cannot be part of
 multiple groups. The grouping terms can be either absolute or relative. The
 newly formed groups, which are passed on to the group filter, can also contain
 meta-information about the flow-records contained within the group using the
-aggregate clause defined as part of the grouper query.
+aggregate clause defined as part of the grouper query. The possible
+aggregation operations are \emph{static, count, product, sum, logical
+and/or/xor, arithmetic mean, standard deviation, union, median, minimum and
+maximum}.
 
 The group-filter is the last processing stage of a branch. It performs
 \emph{absolute} filtering on group-records. The group-records
