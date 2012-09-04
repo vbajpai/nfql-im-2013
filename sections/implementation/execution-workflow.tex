@@ -32,7 +32,7 @@ read and is therefore not available at compile time.  In order to subvert the
 need to define complex branching statements, a dedicated comparator is defined
 for every possible field length and comparison operation. A Python script
 generates C source code for these comparators at compile time conforming to
-the structure shown in listing \ref{filter-struct}. This allows the term
+the structure shown in listing \ref{lst:filter-struct}. This allows the term
 definitions to make runtime calls using a function name derived from the
 combination of operation type and field length.
 
