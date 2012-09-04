@@ -90,7 +90,7 @@ the filter stage decision is available, thereby allowing
 reading-filtering-writing to happen in $O(n)$ time, where $n$ is the number of
 records in the trace. The filtered records are saved in a common location from
 where they are referenced by each branch. This helps keep the memory costs at
-a minimum when multiple branches are involved.  We used the publically
+a minimum when multiple branches are involved.  We used the publicly
 available Trace 7 from the SimpleWeb \cite{simpleweb} to compare the
 performance of the optimized \ac{NFQL} implementation against the one defined
 by the flow query language as shown in Fig.  \ref{fig:fv1-fv2-filter}. The
@@ -156,7 +156,7 @@ using a Python script.
 \subsubsection{Merger}
 
 The merger is used to relate groups from different branches according to a
-merging criterean. The implementation is not trivial since the number of
+merging criterion. The implementation is not trivial since the number of
 branches that need to be spawned is read from the query and is not known until
 runtime. As a result, an iterator that can provide all possible permutations
 of $m-$tuple (where $m$ is the number of branches) group record $ID$s was
