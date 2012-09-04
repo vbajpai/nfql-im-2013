@@ -36,11 +36,14 @@ unidirectional and transport protocol agnostic.
 %to classify features that could identify webmail traffic from any other
 %traffic running over HTTPS.
 
-A survey by Sperotto \textit{et al.} \cite{sperotto:2010} gives an overview of
-how network flow analysis can be used to detect Denial of Service attacks,
-scans probing target systems and the target discovery phase of worms. In
-addition, a survey by Callado \textit{et al.} \cite{callado:2009} also lists
-behaviour analysis of Internet backbone traffic and general anomaly detection.
+The wide applicability of this approach is easily seen from the pervasive use
+of flow records for a vibrant set of network analysis applications. For
+instance, a survey by Sperotto \textit{et al.} \cite{sperotto:2010} gives an
+overview of how network flow analysis can be used to detect Denial of Service
+attacks, scan probing target systems and the target discovery phase of worms.
+In addition, a survey by Callado \textit{et al.} \cite{callado:2009} also
+lists behaviour analysis of Internet backbone traffic and general anomaly
+detection.
 
 Understanding intricate traffic patterns require sophisticated flow analysis
 tools that can mine flow records for such a usage.  Unfortunately current
@@ -48,7 +51,7 @@ tools fail to deliver owing to their language design and simplistic filtering
 methods.  We recently proposed a flow query language design
 \cite{vmarinov:2009} that aims to cater to such needs.  It can process
 flow records, aggregate them into groups, apply absolute (or relative) filters
-and invoke Allen interval algebra rules \cite{fallen:1983}. The applicability
+and invoke Allen interval algebra rules \cite{fallen:1983}. The expressiveness
 of the language can be seen from \cite{vperelman:2011} where the authors
 formulate flow queries to identify flow signatures of popular applications.
 
