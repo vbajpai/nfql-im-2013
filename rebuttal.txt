@@ -1,20 +1,41 @@
 Review 1:
-- wrong track
-- lack of description of the language
-- too many implementation details
-- metrics used
-- research questions and conclusions
+1. wrong track
+2. lack of description of the language
+3. too many implementation details
+4. metrics used
+5. research questions and conclusions
 
 Review 2:
-- Gigascope, point to the original NFQL paper
+1. Gigascope, point to the original NFQL paper
 
 Review 3:
-- Explain that NFQL is defined elsewhere, this paper is discussing
-  implementation aspects.
-- Discuss storage requirement vs. state requirement (after all NFQL
-  is a streaming language but it requires state to be maintained)
+1. Explain that NFQL is defined elsewhere, this paper is discussing
+   implementation aspects.
+2. Discuss storage requirement vs. state requirement (after all NFQL
+   is a streaming language but it requires state to be maintained)
 
 Review 4:
-- Explain what NFQL can do that other tools can't do
-- Clarify the order splitter/filter in the query language and the
-  order of filter/splitter in the implementation
+1. Explain what NFQL can do that other tools can't do
+2. Clarify the order splitter/filter in the query language and the
+   order of filter/splitter in the implementation
+
+
+JoSch's notes/comments
+======================
+
+Review 1
+--------
+
+Review 2
+--------
+
+Review 3
+--------
+
+Review 4
+--------
+
+1. The reviewer notes that the work is not state of the art. I think it is
+mentioned a couple of times (even in the abstract) what flowy can do that
+other's cant and in "related work" it is listed how it has even more abilities
+than SiLK.
