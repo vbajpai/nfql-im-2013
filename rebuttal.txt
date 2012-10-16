@@ -5,8 +5,39 @@ Review 1:
 4. metrics used
 5. research questions and conclusions
 
+
+
+
+
 Review 2:
-1. Gigascope, point to the original NFQL paper
+
+- great content, but it does not appear that this paper is a giant leap
+  over prior work
+
+We have had a python prototype implementation [1] in the past, however
+the prototype was extremely slow and could not scale to real-world
+traces. This paper introduces NFQL, an efficient implementation of the
+language. This is not just a reimplementation in C, but the pipeline has
+been reimagined with crispier data structures to allow the
+implementation to scale to real-world traces. This is the first time we
+evaluate and show that NFQL is comparable to contemporary
+flow-processing tools. This paper discusses these implementation aspects.
+
+[1] K. Kanev, N. Melnikov, and J. Schönwälder, “Implementation of a
+stream-based IP flow record query language,” AIMS’10
+
+
+
+- As such some of the older work is perhaps missing from the references.
+  Comes to mind: "Gigascope: A stream database for network applications
+  C Cranor, T Johnson, O Spataschek - SIGMOD03."
+
+The reference to Gigascope is in our flow query language paper [1],
+which is referenced in this paper.
+
+[1] V. Marinov and J. Schönwälder, “Design of a Stream-Based IP Flow
+Record Query Language,” DSOM ’09
+
 
 
 
@@ -23,21 +54,12 @@ Review 3:
 The flow query language was introduced in [1]. It describes the _design_
 advantages of the language. In fact, the expressiveness of the language
 can be seen from [2] where we define queries to identify flow signatures
-of popular applications. We have had a python prototype implementation
-[3] in the past, however the prototype was extremely slow and could not
-scale to real-world traces. This paper introduces NFQL, an efficient
-implementation of the language. This is not just a reimplementation in
-C, but the pipeline has been reimagined with crispier data structures to
-allow the implementation to scale to real-world traces. This is the
-first time we evaluate and show that NFQL is comparable to contemporary
-flow-processing tools. This paper discusses these implementation aspects.
+of popular applications. 
 
 [1] V. Marinov and J. Schönwälder, “Design of a Stream-Based IP Flow
 Record Query Language,” DSOM ’09
 [2] V. Perelman, N. Melnikov, and J. Schönwälder, “Flow signatures of
 Popular Applications,” IM '11.
-[3] K. Kanev, N. Melnikov, and J. Schönwälder, “Implementation of a
-stream-based IP flow record query language,” AIMS’10
 
 
 
