@@ -8,11 +8,51 @@ Review 1:
 Review 2:
 1. Gigascope, point to the original NFQL paper
 
+
+
+
 Review 3:
-1. Explain that NFQL is defined elsewhere, this paper is discussing
-   implementation aspects.
-2. Discuss storage requirement vs. state requirement (after all NFQL
-   is a streaming language but it requires state to be maintained)
+
+- design advantages of the proposed tool are not explained, if this is
+  because NFQL has already been proposed in another paper, then this
+  work is derivative to a high degree
+- again, because the proposed method (not tool) is not explained, and
+  explanation of related tools lacks functional and methodological
+  detail, it is difficult to judge WHY the proposed tool is better 
+
+The flow query language was introduced in [1]. It describes the _design_
+advantages of the language. In fact, the expressiveness of the language
+can be seen from [2] where we define queries to identify flow signatures
+of popular applications. We have had a python prototype implementation
+[3] in the past, however the prototype was extremely slow and could not
+scale to real-world traces. This paper introduces NFQL, an efficient
+implementation of the language. This is not just a reimplementation in
+C, but the pipeline has been reimagined with crispier data structures to
+allow the implementation to scale to real-world traces. This is the
+first time we evaluate and show that NFQL is comparable to contemporary
+flow-processing tools. This paper discusses these implementation aspects.
+
+[1] V. Marinov and J. Schönwälder, “Design of a Stream-Based IP Flow
+Record Query Language,” DSOM ’09
+[2] V. Perelman, N. Melnikov, and J. Schönwälder, “Flow signatures of
+Popular Applications,” IM '11.
+[3] K. Kanev, N. Melnikov, and J. Schönwälder, “Implementation of a
+stream-based IP flow record query language,” AIMS’10
+
+
+
+
+- the method is a -QL -- a query language, which assumes fixed
+  storage, while recent research on traffic processing moves away from
+  the store-then-process approach
+
+The query language of NFQL is _indeed_ stream-based. The processing
+pipeline consists of a number of elements, which are connected with each
+other via pipes. Each element gets a input _stream_, performs some sort
+of operation on it and the output _stream_ is piped to the next element.
+This only requires that NFQL maintains state information between the
+elements. NFQL does not necessarily follow a store-then-process approach
+
 
 
 
@@ -160,10 +200,10 @@ prototype Flowy was feature complete, but was extremely slow in
 comparison to contemporary tools and therefore could not scale to
 real-world traces.  NFQL is an efficient feature complete implementation
 of our flow-query language. It is not just a reimplementation in C, but
-the processing pipeline has been reimagined and optimized with crispier
-data structures to allow it to scale to real-world traces. This makes
-NFQL comparable to current flow-processing tools, in addition to
-offering more feature-sets that are just not available elsewhere.
+the processing pipeline has been reimagined to allow it to scale to
+real-world traces. This makes NFQL comparable to current flow-processing
+tools, in addition to offering more feature-sets that are just not
+available elsewhere.
 
 It is not clear from the review which examples are not easy to
 understand, so it's hard to comment.
