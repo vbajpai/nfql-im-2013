@@ -1,11 +1,67 @@
 Review 1:
-1. wrong track
-2. lack of description of the language
-3. too many implementation details
-4. metrics used
-5. research questions and conclusions
+
+- it has been submitted to the wrong track, as it focusses mostly on
+  implementation aspects.
+
+@juergen
+can you please address this concern?
 
 
+- " and merge group records." I guess it should be either 'merge' or 'group'.
+
+The merger merges group-records. Group-records are a conglomeration of
+multiple flows. The congolomeration takes place according to the query
+given at runtime.
+
+
+
+- What are your main conclusions?
+
+* NFQL, an efficient feature-complete implementation of the flow query
+  language that supersedes our original python prototype Flowy.
+* NFQL, can now process real-world sized traces in matter of minutes,
+  something which used to take days (or even weeks) in Flowy. This
+  expands the scope of flow-processing tools given the added feature set
+  capability offered by the language which is not available elsewhere.
+* The performance evaluation reveal that NFQL is comparable to
+  contemporary flow-processing tools. SiLK appears faster in some situations.
+* The evaluation queries developed as a part of this research can
+  incubate into a more general benchmark suite for flow query tools
+
+
+- Why don't you describe the flow query language? Instead, you describe
+  a processing pipeline. Neither does the paper contain any real
+  description of the query language, nor does it show any example query.
+
+The flow query language was introduced in [1]. It describes the language
+in full detail. This paper discusses the implementation aspects of the
+language. We briefly describe the processing pipeline because that
+helps create a stand ground necessary to understand the tool. Our
+previous usecase paper [2] defines a number of queries that use the language.
+
+[1] V. Marinov and J. Schönwälder, “Design of a Stream-Based IP Flow
+Record Query Language,” DSOM ’09
+[2] V. Perelman, N. Melnikov, and J. Schönwälder, “Flow signatures of
+Popular Applications,” IM '11.
+
+
+
+- Why do you always use the 'Output Flows/Input Flows' metric? Explain that.
+
+The metric was used to blackbox each stage of the pipeline. This helped
+isolate the stages to benchmarks them separately to identify areas that
+may need attention.
+
+
+- Where/what are the used queries?
+  How can I reproduce/repeat your measurements?
+
+The queries are in the git repository referenced as a footnote in the
+paper. The JSON queries were omitted from the paper for brevity reasons
+
+The measurements can be repeated by using the cites public trace
+alongwith the queries in the repository. The benchmarking suite
+developed as a part of the research will help automate the task.
 
 
 
