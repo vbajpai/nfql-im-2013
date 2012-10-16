@@ -1,24 +1,8 @@
-Review 1:
-
-- it has been submitted to the wrong track, as it focusses mostly on
-  implementation aspects.
-
-@juergen
-can you please address this concern?
-
-
-- " and merge group records." I guess it should be either 'merge' or 'group'.
-
-The merger merges group-records. Group-records are a conglomeration of
-multiple flows. The congolomeration takes place according to the query
-given at runtime.
-
-
-
-- What are your main conclusions?
+Reviewer 1:
+- main conclusions?
 
 * NFQL, an efficient feature-complete implementation of the flow query
-  language that supersedes our original python prototype Flowy.
+  language that supersedes our original python prototype Flowy [3].
 * NFQL, can now process real-world sized traces in matter of minutes,
   something which used to take days (or even weeks) in Flowy. This
   expands the scope of flow-processing tools given the added feature set
@@ -28,178 +12,45 @@ given at runtime.
 * The evaluation queries developed as a part of this research can
   incubate into a more general benchmark suite for flow query tools
 
-
-- Why don't you describe the flow query language? Instead, you describe
-  a processing pipeline. Neither does the paper contain any real
-  description of the query language, nor does it show any example query.
+Reviewer 1, 3:
+- flow query language description (design advantages)?
+- example queries?
 
 The flow query language was introduced in [1]. It describes the language
 in full detail. This paper discusses the implementation aspects of the
 language. We briefly describe the processing pipeline because that
 helps create a stand ground necessary to understand the tool. Our
-previous usecase paper [2] defines a number of queries that use the language.
+previous use-case paper [2] defines a number of queries that use the language.
 
-[1] V. Marinov and J. Schönwälder, “Design of a Stream-Based IP Flow
-Record Query Language,” DSOM ’09
-[2] V. Perelman, N. Melnikov, and J. Schönwälder, “Flow signatures of
-Popular Applications,” IM '11.
-
-
-
-- Why do you always use the 'Output Flows/Input Flows' metric? Explain that.
+Reviewer 1:
+- 'Output Flows/Input Flows' metric?
 
 The metric was used to blackbox each stage of the pipeline. This helped
-isolate the stages to benchmarks them separately to identify areas that
-may need attention.
+benchmarks them separately to identify areas that may need attention.
 
-
-- Where/what are the used queries?
-  How can I reproduce/repeat your measurements?
+Reviwer 1:
+- used queries? reproduce/repeat your measurements?
 
 The queries are in the git repository referenced as a footnote in the
 paper. The JSON queries were omitted from the paper for brevity reasons
-
-The measurements can be repeated by using the cites public trace
+The measurements can be repeated by using the cited public trace
 alongwith the queries in the repository. The benchmarking suite
 developed as a part of the research will help automate the task.
 
+Reviewer 4:
+- filtering before splitting?
 
+The filtering _does_ happen before splitting. In fact, NFQL is
+implemented in a way to give away the need for a splitter entirely. As
+such, there is no splitter in the NFQL implementation. This is described
+in section IV-B: Splitter. This is one of the performance optimizations
+that makes NFQL scale well with real-world traces.
 
-Review 2:
+Reviewer 4:
+- filter flows on the fly?
 
-- great content, but it does not appear that this paper is a giant leap
-  over prior work
-
-We have had a python prototype implementation [1] in the past, however
-the prototype was extremely slow and could not scale to real-world
-traces. This paper introduces NFQL, an efficient implementation of the
-language. This is not just a reimplementation in C, but the pipeline has
-been reimagined with crispier data structures to allow the
-implementation to scale to real-world traces. This is the first time we
-evaluate and show that NFQL is comparable to contemporary
-flow-processing tools. This paper discusses these implementation aspects.
-
-[1] K. Kanev, N. Melnikov, and J. Schönwälder, “Implementation of a
-stream-based IP flow record query language,” AIMS’10
-
-
-
-- As such some of the older work is perhaps missing from the references.
-  Comes to mind: "Gigascope: A stream database for network applications
-  C Cranor, T Johnson, O Spataschek - SIGMOD03."
-
-The reference to Gigascope is in our flow query language paper [1],
-which is referenced in this paper.
-
-[1] V. Marinov and J. Schönwälder, “Design of a Stream-Based IP Flow
-Record Query Language,” DSOM ’09
-
-
-
-
-
-Review 3:
-
-- design advantages of the proposed tool are not explained, if this is
-  because NFQL has already been proposed in another paper, then this
-  work is derivative to a high degree
-- again, because the proposed method (not tool) is not explained, and
-  explanation of related tools lacks functional and methodological
-  detail, it is difficult to judge WHY the proposed tool is better 
-
-The flow query language was introduced in [1]. It describes the _design_
-advantages of the language. In fact, the expressiveness of the language
-can be seen from [2] where we define queries to identify flow signatures
-of popular applications. 
-
-[1] V. Marinov and J. Schönwälder, “Design of a Stream-Based IP Flow
-Record Query Language,” DSOM ’09
-[2] V. Perelman, N. Melnikov, and J. Schönwälder, “Flow signatures of
-Popular Applications,” IM '11.
-
-
-
-
-- the method is a -QL -- a query language, which assumes fixed
-  storage, while recent research on traffic processing moves away from
-  the store-then-process approach
-
-The query language of NFQL is _indeed_ stream-based. The processing
-pipeline consists of a number of elements, which are connected with each
-other via pipes. Each element gets a input _stream_, performs some sort
-of operation on it and the output _stream_ is piped to the next element.
-This only requires that NFQL maintains state information between the
-elements. NFQL does not necessarily follow a store-then-process approach
-
-# i do not think this is what the reviewer understands as "stream-based"
-# nfql is not able to process packages as they come. Because it allows
-# to do relative comparison in the grouper and the merger, those stages
-# need to have access to any record of the dataset
-# an extension that could make nfql stream-based for the grouper is a
-# shifting window which only evaluates a small neighbourhood of the
-# packet that is currently evaluated
-# but this idea fails for the merger
-#  - josch
-
-
-
-Review 4:
-
-- can you explain why you need the splitter before the filtering blocks
-and not the other way round? IMHO filtering should happen before
-splitting (fig 1)
-
-The the order of execution of the pipeline stages in the flow query
-language [1] and in the NFQL implementation is different.  According to
-the language specification, as briefly described in section III:
-
-"The pipeline starts with the splitter. It takes the flow-records data
-as input in flow-tools compatible format. The splitter is responsible to
-duplicate the input data out to several branches without any processing
-whatsoever. This allows each of the branches to receive an identical
-copy of the flow data to process it independently."
-
-However, we (and as did the reviewer) realized that in order to
-efficiently process large traces, the NFQL implementation needs to sway
-away from this design decision. As such, NFQL is implemented in a way to
-give away the need for a splitter entirely, as described in section IV-B
-
-"NFQL uses identifiers to reference a flow record in the char array.
-This eliminated the need to copy all the flow-records when moving ahead
-in the processing pipeline. As a result, there is no dedicated splitter
-stage in the execution engine. Each branch references the flow records
-from a common memory location. This helps keep the memory costs at a
-minimum when multiple branches are involved."
-
-As a result, there is no splitter in the NFQL implementation. 
-
-[1] V. Marinov and J. Schönwälder, “Design of a Stream-Based IP Flow
-Record Query Language,” DSOM ’09.Berlin: Springer-Verlag, 2009, pp. 15–28
-
-
-
-
-- can you explain why you do not filter flows on the fly?
-
-We _do_ filter flows on the fly. This is described in section IV-B
-
-"The execution engine, as defined by the flow query language must read
-all the flow records of a supplied trace into memory before starting the
-processing pipeline. Since, the filter stage uses the supplied set of
-absolute rules to make a decision on whether or not to keep a flow
-record; it has to pass through the whole in-memory recordset again to
-produce the filter results. This technique involves multiple linear runs
-on the trace and therefore slows down when the ratio of number of
-filtered records to the total number of flow-records is high. We
-optimized this behavior in NFQL by merging the filter stage with
-in-memory read of the trace. This means, a decision on whether or not to
-make room for a record in memory and eventually hold a pointer for it in
-filter results is done upfront as soon as the record is read from the
-trace. In addition, if a request to write the filter stage results to a
-flow-tools file has been made, the writes are also made as soon the
-filter stage decision is available, thereby allowing
-reading-filtering-writing to happen in O(n) time, where n is the number
-of records in the trace."
+We _do_ filter flows on the fly.
+This is described in section IV-B: Filter
 
 The previous prototype implementations (Flowy and Flowy 2.0) had this
 issue. There was a separate filter stage and the flows were not filtered
@@ -207,89 +58,44 @@ on the fly. NFQL however _does_ filter flows on the fly. We even
 evaluated the performance improvements of NFQL against Flowy 2.0 and saw
 that NFQL now runs 10 times faster as shown in Fig 3.
 
+Reviewer 2:
+- older references (gigascope)? 
 
+The reference to Gigascope is in our flow query language paper [1],
 
+Reviewer 2, 4:
+- not state of the art?
+- not a giant leap over prior work?
+ 
+We have had a python prototype implementation [3] in the past, however
+the prototype was extremely slow. NFQL is not just a reimplementation in
+C, but the pipeline has been reimagined with better data structures to
+allow the implementation to scale to real-world traces. We show that
+NFQL is comparable to contemporary flow-processing tools. This paper
+discusses these implementation aspects.
 
-
-- in IV.B you talk about indexes. What indexes have you used. Please cover
-this topic better
-
-Each flow record is stored as a char array. The trace is stored as an
-array of these flow records. This allows NFQL to reference any flow
-record using identifiers (indexes) in the array for O(1) retrieval.
-
-
-
-
-
-- The work described on this paper is interesting but probably not the
-state of the art in terms of performance and features (i.e. it's not a
-step ahead but more a student project). Some examples are not easy to
-understand.
-
-We have tried to set forth the novelty of NFQL from the very outset,
-The abstract for instance, clearly briefs out the functionality that
-separates it from contemporary flow-processing tools:
-
-"NFQL can process flow records, aggregate them into groups, apply
-absolute or relative filters, invoke Allen interval algebra rules, and
-merge group records."
-
-In section II (related work), we reason how NFQL does more than the
-surveyed contemporary flow-processing tools:
-
+The abstract briefs out the novelty and is elaborated in further
+sections. For instance, In section II, we reason how NFQL does more:
+ 
 flow-tools and nfdump:
-"The power of filtering rules in both the tools is however mostly
-limited to absolute comparisons of flow attributes. As a result,
-relative comparison amongst different flows or querying a timing
-relationship among them is not possible." - which is possible in NFQL.
-In fact, the capabilities of flow-tools and nfdump are just one of the
+The capabilities of flow-tools and nfdump are just one of the
 five stages of the NFQL's processing pipeline. They do not support
 grouping, aggregation, merging et al.
 
 SiLK: 
-SiLK can group flows and merge group records. However, the parameters
+* SiLK can group flows and merge group records. However, the parameters
 over which grouping/merging can be done is faily limited:
-"The grouping and merging operations can only be performed using
-an equality operator. NFQL on the other hand, provides a much richer set
-of comparisons operations, such as equal, not equal, greater than, less
-than, greater or equal, less or equal."
+* SiLK only supports sum and or aggregation operations compared to a huge
+set of aggregation options available in NFQL.
+* The NFQL merger can also match group records by putting timing
+characteristics under considerations. No such Allen operations are
+possible in SiLK.
+* Once flows are grouped together in SiLK, there is no way to unfold the
+groups to identify their member flows. As such, there is no ungrouper in SiLK.
 
-"The newly formed groups, which are passed on to the group filter, can
-also contain meta-information about the flow-records contained within
-the group using the aggregate clause defined as part of the grouper
-query. The possible aggregation operations are static, count, product,
-sum, logical and/or/xor, arithmetic mean, standard deviation, union,
-median, minimum and maximum." - whereas SiLK only supports sum and or
-aggregation operations.
-
-"The relative filtering on the groups are applied to express timing and
-concurrency constraints using Allen interval algebra [6]." - The merger
-can also match group records by putting timing characteristics under
-considerations. No such Allen operations are possible in SiLK.
-
-"The ungrouper is the final processing element of the pipeline. It
-unwraps the tuples of group-records into individual flow-records,
-ordered by their timestamps." - NFQL maintains flow membership information of
-each group record. SiLK does not provide this feature. As a result, once
-flows are grouped together in SiLK, there is no way to unfold the groups
-to identify their member flows. As such, there is no ungrouper in SiLK.
-
-In section V, we evaluate the performance of each tool against NFQL.
-flow-tools and nfdump could only participate in one of the evaluations
-due to their limited feature sets. In rest of the evaluations only SiLK
-could participate. Even so, we had to carefully design queries to find a
-common ground since most of the NFQL operations are not possible in SiLK.
-
-We believe NFQL is major step ahead in this effort. Our first python
-prototype Flowy was feature complete, but was extremely slow in
-comparison to contemporary tools and therefore could not scale to
-real-world traces.  NFQL is an efficient feature complete implementation
-of our flow-query language. It is not just a reimplementation in C, but
-the processing pipeline has been reimagined to allow it to scale to
-real-world traces. This makes NFQL comparable to current flow-processing
-tools, in addition to offering more feature-sets that are just not
-available elsewhere.
-
-It is not clear from the review which examples are not easy to
-understand, so it's hard to comment.
+[1] V. Marinov and J. Schönwälder, “Design of a Stream-Based IP Flow
+Record Query Language,” DSOM ’09
+[2] V. Perelman, N. Melnikov, and J. Schönwälder, “Flow signatures of
+Popular Applications,” IM '11.
+[3] K. Kanev, N. Melnikov, and J. Schönwälder, “Implementation of a
+stream-based IP flow record query language,” AIMS’10
