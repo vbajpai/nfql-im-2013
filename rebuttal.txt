@@ -75,7 +75,15 @@ of operation on it and the output _stream_ is piped to the next element.
 This only requires that NFQL maintains state information between the
 elements. NFQL does not necessarily follow a store-then-process approach
 
-
+# i do not think this is what the reviewer understands as "stream-based"
+# nfql is not able to process packages as they come. Because it allows
+# to do relative comparison in the grouper and the merger, those stages
+# need to have access to any record of the dataset
+# an extension that could make nfql stream-based for the grouper is a
+# shifting window which only evaluates a small neighbourhood of the
+# packet that is currently evaluated
+# but this idea fails for the merger
+#  - josch
 
 
 
