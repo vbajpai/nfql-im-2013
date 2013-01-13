@@ -3,31 +3,24 @@ traffic as flow records and use them for network analysis. Simple analysis of
 network traffic can be done by a range of graphical utilities like ntop
 \cite{ntop:2000}, FlowScan \cite{flowscan:2000}, NfSen \cite{phaag:2006} and
 Stager \cite{oslebo:2006}. All these tools understand the NetFlow format while
-ntop and Stager can also process \ac{IPFIX}. They use a round robin database
-to store flow information, except for Stager which uses a MySQL database.
-Graphical presentation is done via a webinterface or in the case of FlowScan
-via RRDTool.
-
-\texttt{flow-tools} and \texttt{nfdump} are among the most popular tools used
-for analyzing NetFlow data. \texttt{flow-tools} \cite{sromig:2000} is a suite
-of programs for capturing and processing NetFlow v5 flow records. It consists
-of 24 separate tools that work together by connecting them via UNIX pipes. It
-can capture, read, filter, and print flow records internally saved in a
-fixed-size format. \texttt{nfdump} \cite{phaag:2006} is a very similar tool
-that uses a different storage format. Flow records are captured using
-\texttt{nfcapd} and then processed by \texttt{nfdump}. The power of filtering
-rules in both the tools is however mostly limited to absolute comparisons of
-flow attributes. As a result, relative comparison amongst different flows or
-querying a timing relationship among them is not possible.
+ntop and Stager can also process \ac{IPFIX}. \texttt{flow-tools} and
+\texttt{nfdump} are among the most popular tools used for analyzing NetFlow
+data. \texttt{flow-tools} \cite{sromig:2000} is a suite of programs for
+capturing and processing NetFlow v5 flow records. It consists of 24 separate
+tools that work together by connecting them via UNIX pipes. It can capture,
+read, filter, and print flow records internally saved in a fixed-size format.
+\texttt{nfdump} \cite{phaag:2006} is a very similar tool that uses a different
+storage format. The power of filtering rules in both the tools is however
+mostly limited to absolute comparisons of flow attributes. As a result,
+relative comparison amongst different flows or querying a timing relationship
+among them is not possible.
 
 
-SiLK \cite{SiLK} is a network traffic collection and analysis tool developed
-and maintained by the CERT Network Situational Awareness Team (CERT NetSA) at
-Carnegie Mellon University.  SiLK is the tool that comes quite close to
-providing similar capabilities as \ac{NFQL} and is therefore used as a
-reference point to compare the performance of the \ac{NFQL} execution engine
-in this paper. The design and implementation of SiLK, however, differs a lot
-from that of \ac{NFQL}. For instance, in SiLK there are separate tools to
+SiLK \cite{SiLK} is a network traffic collection and analysis tool that comes
+quite close to providing similar capabilities as \ac{NFQL} and is therefore
+used as a reference point to compare the performance of the \ac{NFQL}
+execution engine. The design and implementation of SiLK, however, differs a
+lot from that of \ac{NFQL}. For instance, in SiLK there are separate tools to
 perform the task of each stage of the \ac{NFQL} processing pipeline. The stage
 functionality is not full-fledged though. The grouping and merging operations
 can only be performed using an equality operator. This restriction allows the
