@@ -1,42 +1,35 @@
 The flow query language consists of a number of independent stages that are
 connected to one another to form a processing pipeline as shown in Fig.
 \ref{fig:nfql-pipeline}. A complete description of the semantics of each
-pipeline stage can be found in \cite{vmarinov:2009}.
-
-The pipeline starts with the splitter. It takes the flow-records data as input
-in \texttt{flow-tools} compatible format. The splitter is responsible to
-duplicate the input data out to several branches without any processing
-whatsoever. This allows each of the branches to receive an identical copy of
-the flow data to process it independently.
+pipeline stage can be found in \cite{vmarinov:2009}. The pipeline starts with
+the splitter. It takes the flow-records data as input in \texttt{flow-tools}
+compatible format. The splitter is responsible to duplicate the input data out
+to several branches without any processing whatsoever. This allows each of the
+branches to receive an identical copy of the flow data to process it
+independently.
 
 The filter is the first processing stage of a branch in the pipeline.  It
 performs \emph{absolute} filtering on the input flow-records data.  The
 flow-records that pass the filtering criterion are forwarded to the grouper,
 the rest of the flow-records are dropped. The filter compares separate fields
 of a flow-record against either a constant value or a value on a different
-field of the \emph{same} flow-record.
-
-The grouper performs aggregation of the input flow-records. The grouping
-terms can be either absolute or relative. The newly formed groups, which are
-passed on to the group filter, can also contain meta-information about the
-flow-records contained within the group using the aggregate clause defined as
-part of the grouper query. The possible aggregation operations are
-\emph{static, count, product, sum, logical and/or/xor, arithmetic mean,
-standard deviation, union, median, minimum and maximum}.
-
-The group-filter is the last processing stage of a branch. It performs
-\emph{absolute} filtering on group-records. The group-records
-that pass the filtering criterion are forwarded to the merger, the rest of the
+field of the \emph{same} flow-record. The grouper performs aggregation of the
+input flow-records. The grouping terms can be either absolute or relative. The
+newly formed groups, which are passed on to the group filter, can also contain
+meta-information about the flow-records contained within the group using the
+aggregate clause defined as part of the grouper query. The possible
+aggregation operations are \emph{static, count, product, sum, logical
+and/or/xor, arithmetic mean, standard deviation, union, median, minimum and
+maximum}. The group-filter is the last processing stage of a branch. It
+performs \emph{absolute} filtering on group-records. The group-records that
+pass the filtering criterion are forwarded to the merger, the rest of the
 group-records are dropped. The group-filter compares separate fields (or
-aggregated fields) of a group-record against either a constant value or a value
-on a different field of the \emph{same} group-record.
-
-The merger performs relative filtering on the N-tuples of groups formed from
-the N stream of groups passed on from the group-filter as input. The relative
-filtering on the groups are applied to express timing and concurrency
-constraints using Allen interval algebra \cite{fallen:1983}.
-
-The ungrouper is the final processing stage of the pipeline. It unwraps the
-tuples of group-records into individual flow-records, ordered by their
-timestamps. Any duplicate flow-records appearing from several group-records
-are eliminated.
+aggregated fields) of a group-record against either a constant value or a
+value on a different field of the \emph{same} group-record. The merger
+performs relative filtering on the N-tuples of groups formed from the N stream
+of groups passed on from the group-filter as input. The relative filtering on
+the groups are applied to express timing and concurrency constraints using
+Allen interval algebra \cite{fallen:1983}. The ungrouper is the final
+processing stage of the pipeline. It unwraps the tuples of group-records into
+individual flow-records, ordered by their timestamps. Any duplicate
+flow-records appearing from several group-records are eliminated.
