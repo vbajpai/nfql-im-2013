@@ -8,9 +8,9 @@
 
 The engine uses the \texttt{zlib} \cite{rfc1950} software library to compress
 the results written to the \texttt{flow-tools} files. \texttt{zlib} supports
-$9$ compression levels with $9$ being the highest. \ac{NFQL} allows the user
-to supply its desired choice of the compression level.  A default level of $5$
-is used for writes if a choice is not indicated.  Fig.
+$9$ compression levels with $9$ being the highest. \texttt{nfql} allows the
+user to supply its desired choice of the compression level.  A default level
+of $5$ is used for writes if a choice is not indicated.  Fig.
 \ref{fig:engine-zlevel} shows the time taken to write a sample of records
 passing the filter stage for each \texttt{z-level}. It goes to show that each
 level adds its own performance overhead and must be used with discretion. It

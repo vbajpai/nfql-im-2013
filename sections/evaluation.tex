@@ -21,12 +21,12 @@ shown in Fig. \ref{fig:benchmarks-filter}.
   \end{center}
 \end{figure}
 
-It can be seen that the performance of the filter stage in \ac{NFQL} is
+It can be seen that the performance of the filter stage in \texttt{nfql} is
 comparable to that of \texttt{flowtools} and SiLK. SiLK takes less time on
 lower ratios, but then SilK and \texttt{nfdump} also use their own file
 format. \texttt{nfdump} appears to be significantly faster than the rest. This
 is because \texttt{nfdump} uses the \texttt{lzo} compression scheme. Adding
-\texttt{lzo} compression will likely improve \ac{NFQL}'s filter
+\texttt{lzo} compression will likely improve \texttt{nfql}'s filter
 performance. Note that all the tools were single-threaded
 in this evaluation, and did not completely utilize the $24$ available cores. 
 
@@ -50,14 +50,14 @@ results are shown in Fig. \ref{fig:benchmarks-grouper}.
 \end{figure}
 
 The evaluation graph reveals that the time taken by the tools are comparable
-on lower ratios, but on higher ratios, \ac{NFQL} starts to drift apart. Since
-most of the time is taken in writing the records to files, it is unclear
+on lower ratios, but on higher ratios, \texttt{nfql} starts to drift apart.
+Since most of the time is taken in writing the records to files, it is unclear
 whether SiLK's usage of its own file format is responsible for the drift.
 SiLK's \texttt{rwgroup} tool is also supplied a \texttt{-{}-summarize} flag to
 force it to write only the first record of each group, to make both tools
 write the same number of records. This gives SiLK the leverage to not store
-information about which members are part of the group. \ac{NFQL} on the other
-hand needs to allocate resources (which may take time) to keep this
+information about which members are part of the group. \texttt{nfql} on the
+other hand needs to allocate resources (which may take time) to keep this
 information in its data structures, since the ungrouper later may request to
 write the members of a group while unfolding the tuples.  It is also important
 to note that both the tools again remained single-threaded throughout the
@@ -70,7 +70,7 @@ it comes as no surprise, that bifurcating \texttt{qsort} invocation to
 multiple threads and later merging the results back using merge sort will help
 parallelize the grouper stage and maybe reduce the drift on higher ratios. In
 addition, since all of the evaluation queries had grouping terms using an
-equality comparator, \ac{NFQL} can introspect such a grouping rule to
+equality comparator, \texttt{nfql} can introspect such a grouping rule to
 dynamically optimize processing searches using a hashtable and turn to
 \texttt{qsort} based grouping only as a fallback.
 
@@ -93,14 +93,14 @@ Fig. \ref{fig:benchmarks-groupfilter}.
   \end{center}
 \end{figure}
 
-It can be seen that the timings of \ac{NFQL} are far apart from that of SiLK.
-It is due to the drift already created by the grouper at the $1.0$ ratio in
-the previous stage. As a result, the group filter comes into play only after
-$300$ seconds, whereas SiLK's group filtering already starts just below $150$
-seconds. Even if we normalize the graph, it can be observed that the \ac{NFQL}
-group filter has a higher slope. This is because it is only executed once the
-grouper returns, and therefore has to reiterate the groups to make a filtering
-decision.
+It can be seen that the timings of \texttt{nfql} are far apart from that of
+SiLK.  It is due to the drift already created by the grouper at the $1.0$
+ratio in the previous stage. As a result, the group filter comes into play
+only after $300$ seconds, whereas SiLK's group filtering already starts just
+below $150$ seconds. Even if we normalize the graph, it can be observed that
+the \texttt{nfql} group filter has a higher slope. This is because it is only
+executed once the grouper returns, and therefore has to reiterate the groups
+to make a filtering decision.
 
 The fourth set of queries stress the merger stage. We reuse the filter,
 grouper and group filter queries that produce a $1.0$ ratio. These queries are
@@ -130,8 +130,8 @@ filter stage to \texttt{flowtools} files. As a result, the amount of disk I/O
 involved is twice as much as well. Even though each branch is delegated to a
 separate core using affinity masks, most of time is taken in writing these
 results to the file. These results although look less promising, they are way
-better than the original \ac{NFQL} merger implementation. The optimized merger
-implementation takes advantage of sorted nature of filtered groups and
+better than the original \texttt{nfql} merger implementation. The optimized
+merger implementation takes advantage of sorted nature of filtered groups and
 therefore can significantly reduce the number of merger matches. It also
 writes a merged group record to a file only once despite the number of times
 it has matched. Without these optimizations, running such queries on the

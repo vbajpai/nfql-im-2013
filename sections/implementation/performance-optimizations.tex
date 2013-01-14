@@ -2,13 +2,13 @@ There can be a situation where the query designer may incorrectly ask for
 aggregation on a field already specified in a grouper (or filter) clause. If
 the relative operator is an equality comparison, the aggregation on such a
 field becomes less useful, since the members of the grouped record will always
-have the same value for that field. \ac{NFQL} realizes this redundant request
-and ignores such aggregations.
+have the same value for that field. \texttt{nfql} realizes this redundant
+request and ignores such aggregations.
 
-\ac{NFQL} has dedicated comparator functions for each type of operation and
-the type of the field offset it operates upon. It is not guaranteed that given
-the type of the query and trace, the program will eventually go through each
-stage of the pipeline. It is also possible that the program exits before,
+\texttt{nfql} has dedicated comparator functions for each type of operation
+and the type of the field offset it operates upon. It is not guaranteed that
+given the type of the query and trace, the program will eventually go through
+each stage of the pipeline. It is also possible that the program exits before,
 because there is nothing more for the next stage to compute. The function
 pointers are therefore set as late as possible and are called from their
 respective stages just before the comparison is needed.

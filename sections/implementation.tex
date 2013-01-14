@@ -1,17 +1,9 @@
-The \ac{NFQL} architecture primarily consists of a front-end parser backed up
-by an execution engine as shown in Fig. \ref{fig:nfql-pipeline}. The execution
-engine is the brain of \ac{NFQL} where the complete pipeline is processed. It
-receives the flow query at runtime using a JSON \cite{rfc4627} intermediate
-format. The execution engine is written in C, however the front-end parser can
-be written in any desired language.
-
-%\begin{figure}[ht!]
-  %\begin{center}
-    %\includegraphics* [width=0.8\linewidth]{nfql-architecture}
-    %\caption{NFQL Architecture}
-    %\label{fig:architecture}
-  %\end{center}
-%\end{figure}
+The \texttt{nfql} architecture primarily consists of a front-end parser backed
+up by an execution engine as shown in Fig. \ref{fig:nfql-pipeline}. The
+execution engine is the brain of \texttt{nfql} where the complete pipeline is
+processed. It receives the flow query at runtime using a JSON \cite{rfc4627}
+intermediate format. The execution engine is written in C, however the
+front-end parser can be written in any desired language.
 
 \subsection{Flow Query Intermediate Format}
 \input{sections/implementation/flow-query-intermediate-format}

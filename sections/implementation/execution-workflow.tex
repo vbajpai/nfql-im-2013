@@ -57,8 +57,8 @@ struct filter_term {
 };
 \end{lstlisting}
 
-\subsubsection{Splitter} \ac{NFQL} uses identifiers to reference a flow record
-in the \texttt{char} array. This eliminated the need to copy all the
+\subsubsection{Splitter} \texttt{nfql} uses identifiers to reference a flow
+record in the \texttt{char} array. This eliminated the need to copy all the
 flow-records when moving ahead in the pipeline. As a result, there is no
 dedicated splitter stage in the execution engine. Each branch references the
 flow records from a common memory location. This helps keep the memory costs
@@ -68,7 +68,7 @@ at a minimum when multiple branches are involved.
 \begin{figure}[h!]
   \begin{center}
     \includegraphics* [width=0.9\linewidth]{filter-fv1-fv2}
-    \caption{Filter Stage: Flowy 2.0 vs NFQL}
+    \caption{Filter Stage: Flowy 2.0 vs \texttt{nfql}}
     \label{fig:fv1-fv2-filter}
   \end{center}
 \end{figure}
@@ -80,7 +80,7 @@ make a decision on whether or not to keep a flow record; it has to pass
 through the whole in-memory recordset \emph{again} to produce the filter
 results. This technique involves multiple linear runs on the trace and
 therefore slows down when the ratio of number of filtered records to the total
-number of flow-records is high. We optimized this behavior in \ac{NFQL} by
+number of flow-records is high. We optimized this behavior in \texttt{nfql} by
 merging the filter stage with in-memory read of the trace. This means, a
 decision on whether or not to make room for a record in memory and eventually
 hold a pointer for it in filter results is done upfront as soon as the record
@@ -89,18 +89,15 @@ results to a flow-tools file has been made, the writes are also made as soon
 the filter stage decision is available, thereby allowing
 reading-filtering-writing to happen in $O(n)$ time, where $n$ is the number of
 records in the trace. We used the publicly available Trace 7 from the
-SimpleWeb \cite{simpleweb} to compare the performance of \ac{NFQL} against the
-one defined by the flow query language as shown in Fig.
+SimpleWeb \cite{simpleweb} to compare the performance of \texttt{nfql} against
+the one defined by the flow query language as shown in Fig.
 \ref{fig:fv1-fv2-filter}. The filter stage implementation with these
 optimizations runs 10 times faster and is more pronounced on higher ratios.
 
-\begin{figure}[ht!]
-  \begin{center}
+\begin{figure}[ht!] \begin{center}
     \includegraphics*[width=0.9\linewidth]{grouper-fv2-bsearch-fv2}
-    \caption{Grouper Stage: NFQL (Generic) vs NFQL (Specific)}
-    \label{fig:fv1-fv2-grouper}
-  \end{center}
-\end{figure}
+    \caption{Grouper Stage: \texttt{nfql} (Generic) vs \texttt{nfql}
+  (Specific)} \label{fig:fv1-fv2-grouper} \end{center} \end{figure}
 
 \subsubsection{Grouper}
 
@@ -110,21 +107,21 @@ recordset leading to a complexity of $O(n^2)$, where $n$ is the number of
 filtered records. A smarter approach is to put the copy in a hash table and
 then try to map each pointer while walking down the filtered recordset once,
 leading to a complexity of $O(n)$. The hash table approach however, will only
-work on equality comparisons. A better approach, as implemented in \ac{NFQL}
-is to sort the filtered recordset on the field offsets of all the requested
-grouping terms of a clause. This helps the execution engine perform a nested
-binary search to reduce the linear pass to a fairly small filtered recordset.
-This helps the grouper perform faster search lookups to find records that must
-group together in $O(n*lg(k))$ time with a preprocessing step taking
-$O(p*n*lg(n))$ in the average case, where $n$ is the number of filtered
-records, $p$ is the number of grouping terms in a clause and $k$ is the number
-of unique filtered records. The grouping approach has further been optimized
-when the filtered records are grouped for equality. In such a scenario, the
-need to search for unique records and a  subsequent binary search goes away.
-The groups can now be formed in $O(n)$ time with the same preprocessing step
-taking $O(p*n*lg(n))$.  The performance evaluation of the grouper handling
-this special case against when handling generic cases is shown in Fig.
-\ref{fig:fv1-fv2-grouper}.
+work on equality comparisons. A better approach, as implemented in
+\texttt{nfql} is to sort the filtered recordset on the field offsets of all
+the requested grouping terms of a clause. This helps the execution engine
+perform a nested binary search to reduce the linear pass to a fairly small
+filtered recordset.  This helps the grouper perform faster search lookups to
+find records that must group together in $O(n*lg(k))$ time with a
+preprocessing step taking $O(p*n*lg(n))$ in the average case, where $n$ is the
+number of filtered records, $p$ is the number of grouping terms in a clause
+and $k$ is the number of unique filtered records. The grouping approach has
+further been optimized when the filtered records are grouped for equality. In
+such a scenario, the need to search for unique records and a  subsequent
+binary search goes away.  The groups can now be formed in $O(n)$ time with the
+same preprocessing step taking $O(p*n*lg(n))$.  The performance evaluation of
+the grouper handling this special case against when handling generic cases is
+shown in Fig.  \ref{fig:fv1-fv2-grouper}.
 
 The resultant group records are a conglomeration of multiple flow records with
 some common characteristics. Some of the non-common characteristics can also
@@ -154,15 +151,15 @@ record from one branch with every other record of each branch. This leads to a
 complexity of $O(g^m)$ where $g$ is the number of filtered group records and
 $m$ is the number of branches. The possible number of tries when matching
 group records, however, can be reduced by sorting the group records on the
-field offsets used for a match. \ac{NFQL} optimizes the merger to skip over
-iterator permutations when a state of a current field offset value may not
-allow any further match beyond the index in the current branch.  For such an
-optimization to work, the filtered group records must be sorted in the order
-of field offsets specified in the merger clause.  Specifying the filtered
-group records in any other order may lead to undefined behavior. This means,
-that if the same field offsets were used in the grouper stage, the terms in
-the group clause can be rearranged by the query designer to align with the
-order of terms in the merger clause.
+field offsets used for a match. \texttt{nfql} optimizes the merger to skip
+over iterator permutations when a state of a current field offset value may
+not allow any further match beyond the index in the current branch.  For such
+an optimization to work, the filtered group records must be sorted in the
+order of field offsets specified in the merger clause.  Specifying the
+filtered group records in any other order may lead to undefined behavior. This
+means, that if the same field offsets were used in the grouper stage, the
+terms in the group clause can be rearranged by the query designer to align
+with the order of terms in the merger clause.
 
 The flow query language also bases the merger matches on the notion of matched
 tuples. This means that a filtered group record can be written to a file
