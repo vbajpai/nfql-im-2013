@@ -20,11 +20,12 @@
 \usepackage{listings}
 \usepackage{todonotes}
 \renewcommand{\ttdefault}{cmtt}
+\usepackage[font=footnotesize,caption=false]{subfig}
 %----------------------------------------------------------------------
 
 \begin{document}
 
-\title{NFQL: An Efficient Tool for Querying Network Flow Records}
+\title{NFQL: A Tool for Querying Network Flow Records}
 \author{\IEEEauthorblockN{Vaibhav Bajpai, Johannes Schauer, Jürgen
 Schönwälder} \IEEEauthorblockA{Computer Science, Jacobs University Bremen,
 Germany \\ \texttt{\{v.bajpai, j.schauer,
@@ -41,12 +42,12 @@ j.schoenwaelder\}@jacobs-university.de}}}
 
 
 \begin{abstract} Cisco's NetFlow protocol and IETF's IPFIX open standard are
-  the de-facto techniques for collecting aggregate network traffic statistics.
-  However, understanding certain patterns in these network statistics requires
-  sophisticated flow analysis tools that can mine flows for such a usage. We
+  the widely deployed techniques for collecting network flow statistics.
+  Understanding certain patterns in these network statistics requires
+  sophisticated flow analysis tools that can efficiently mine flow records. We
   recently proposed \ac{NFQL} that can process flow records, aggregate them
-  into groups, apply absolute or relative filters, invoke Allen interval
-  algebra rules, and merge group records. In this paper, we introduce an
+  into groups, apply absolute or relative filters, and invoke Allen interval
+  algebra rules to merge group records. In this paper, we introduce an
   efficient implementation of the query language.  It has been evaluated by a
   suite of benchmarks against contemporary flow-processing
   tools.\end{abstract}
@@ -68,6 +69,11 @@ j.schoenwaelder\}@jacobs-university.de}}}
 \input{sections/evaluation}\label{sec:evaluation}
 \section{Conclusion}
 \input{sections/conclusion}\label{sec:conclusion}
+\section*{Acknowledgements}
+This work was partly funded by Flamingo, a Network of Excellence
+project (ICT-318488) supported by the European Commission under its
+Seventh Framework Programme.
+
 %----------------------------------------------------------------------
 
 

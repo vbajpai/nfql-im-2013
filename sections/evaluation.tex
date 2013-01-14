@@ -25,11 +25,10 @@ It can be seen that the performance of the filter stage in \ac{NFQL} is
 comparable to that of \texttt{flowtools} and SiLK. SiLK takes less time on
 lower ratios, but then SilK and \texttt{nfdump} also use their own file
 format. \texttt{nfdump} appears to be significantly faster than the rest. This
-is because \texttt{nfdump} uses the \texttt{lzo} compression scheme. It comes
-as a realization, that adding \texttt{lzo} compression will drastically
-improve \ac{NFQL}'s filter performance. It is important to note, that all the
-tools were single-threaded in this evaluation, and did not completely utilize
-the $24$ available cores. 
+is because \texttt{nfdump} uses the \texttt{lzo} compression scheme. Adding
+\texttt{lzo} compression will likely improve \ac{NFQL}'s filter
+performance. Note that all the tools were single-threaded
+in this evaluation, and did not completely utilize the $24$ available cores. 
 
 The second set of queries stress the grouper stage. We reuse the filter query
 that produces a $1.0$ ratio to allow the grouper to receive the entire trace

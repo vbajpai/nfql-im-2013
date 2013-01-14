@@ -1,7 +1,7 @@
 all: build make
 
 build:
-	latexmk -pvc -f -pdf -quiet index.tex
+	latexmk -pvc -f -pdf index.tex
 
 clean:
 	latexmk -c

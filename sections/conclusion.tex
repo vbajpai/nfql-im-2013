@@ -1,14 +1,15 @@
-We presented \ac{NFQL}\footnote{\texttt{\url{http://nfql.vaibhavbajpai.com}}},
-an efficient C implementation of the stream-based flow query language. The
-language allows applying absolute or relative filters, aggregating flows into
-groups, evaluating timing relationships among them, and merging them into one
-collection. \ac{NFQL} can execute such complex queries in matter of minutes,
-thereby expanding the scope of current flow record processing tools.  The
-conducted performance evaluations reveal that \ac{NFQL} is on par with tools
-that support only absolute filters. SiLK, the only openly available package
-that provides tools that are similar to the rest of \ac{NFQL}'s processing
-pipeline appears faster. This is because it can optimize its operations in
-favor of the limited set of comparisons that are only based on equality, and
-its usage of a different file storage format. The evaluation queries developed
-as a part of this research work may also develop into a more general benchmark
-suite for flow query tools and platforms.
+We presented
+\texttt{nfql}\footnote{\texttt{\url{http://nfql.vaibhavbajpai.com}}}, an
+efficient C implementation of the stream-based flow query language, \ac{NFQL}.
+The language allows applying absolute or relative filters, aggregating flows
+into groups, evaluating timing relationships among them, and merging them into
+one collection. \texttt{nfql} can execute such complex queries in matter of
+minutes, thereby expanding the scope of current flow record processing tools.
+The conducted performance evaluations reveal that \texttt{nfql} is on par with
+tools that support only absolute filters. SiLK, the only openly available
+package that provides tools that are similar to the rest of \texttt{nfql}'s
+processing pipeline appears faster. This is because it can optimize its
+operations in favor of the limited set of comparisons that are only based on
+equality, and its usage of a different file storage format. The evaluation
+queries developed as a part of this research work may also develop into a more
+general benchmark suite for flow query tools and platforms.
