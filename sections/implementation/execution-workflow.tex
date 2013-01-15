@@ -2,7 +2,7 @@ A custom C library has been written to directly read/write data stored in
 \texttt{flow-tools} format. The library sequentially reads the flow-records
 into memory to support random access required for relative filtering. Each
 flow-record is stored in a \texttt{char} array and the offsets to each field
-are stored in separate \texttt{structs} as shown in listing
+are stored in separate \texttt{structs} as shown in Listing
 \ref{lst:c-lib-struct}. The array of such records are indexed allowing fast
 retrieval in $O(1)$ time.
 
@@ -32,7 +32,7 @@ read and is therefore not available at compile time.  In order to subvert the
 need to define complex branching statements, a dedicated comparator is defined
 for every possible field length and comparison operation. A Python script
 generates C source code for these comparators at compile time conforming to
-the structure shown in listing \ref{lst:filter-struct}. This allows the term
+the structure shown in Listing \ref{lst:filter-struct}. This allows the term
 definitions to make runtime calls using a function name derived from the
 combination of operation type and field length.
 
@@ -85,7 +85,7 @@ merging the filter stage with in-memory read of the trace. This means, a
 decision on whether or not to make room for a record in memory and eventually
 hold a pointer for it in filter results is done upfront as soon as the record
 is read from the trace. In addition, if a request to write the filter stage
-results to a flow-tools file has been made, the writes are also made as soon
+results to a \texttt{flow-tools} file has been made, the writes are also made as soon
 the filter stage decision is available, thereby allowing
 reading-filtering-writing to happen in $O(n)$ time, where $n$ is the number of
 records in the trace. We used the publicly available Trace 7 from the
@@ -158,7 +158,7 @@ an optimization to work, the filtered group records must be sorted in the
 order of field offsets specified in the merger clause.  Specifying the
 filtered group records in any other order may lead to undefined behavior. This
 means, that if the same field offsets were used in the grouper stage, the
-terms in the group clause can be rearranged by the query designer to align
+terms in the grouper clause can be rearranged by the query designer to align
 with the order of terms in the merger clause.
 
 The flow query language also bases the merger matches on the notion of matched

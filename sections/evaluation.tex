@@ -26,10 +26,11 @@ It can be seen that the performance of the filter stage in \texttt{nfql} is
 comparable to that of \texttt{flow-tools} and SiLK. SiLK takes less time on
 lower ratios, but then SilK and \texttt{nfdump} also use their own file
 format. \texttt{nfdump} appears to be significantly faster than the rest. This
-is because \texttt{nfdump} uses the \texttt{lzo} compression scheme. Adding
-\texttt{lzo} compression will likely improve \texttt{nfql}'s filter
-performance. Note that all the tools were single-threaded
-in this evaluation, and did not completely utilize the $24$ available cores. 
+is because \texttt{nfdump} uses the \texttt{lzo} compression scheme. It goes
+to show that adding \texttt{lzo} compression will likely improve
+\texttt{nfql}'s filter performance. Note that all the tools were
+single-threaded in this evaluation, and did not completely utilize the $24$
+available cores. 
 
 The second set of queries stress the grouper stage. We reuse the filter query
 that produces a $1.0$ ratio to allow the grouper to receive the entire trace
@@ -83,7 +84,7 @@ filter then reuses the same varying values of the \texttt{packet} field offset
 to control the amount of groups that are filtered ahead. The filtered groups
 are again written as \texttt{flow-tools} files using the same \texttt{zlib}
 compression level. The ratio of the number of output filtered groups to the
-number of the input group is plotted against time. The results are shown in
+number of the input groups is plotted against time. The results are shown in
 Fig. \ref{fig:benchmarks-groupfilter}.
 
 \begin{figure}[ht!]
@@ -111,7 +112,8 @@ ratios. The groups that are merged are again written as \texttt{flow-tools}
 files using the same \texttt{zlib} compression level. The ratio of the number
 of merged groups to twice\footnote{Each branch pushes the entire trace as an
 input to the merger.} the number of flow records in the original trace is
-plotted against time. A data point for SiLK for the $0.2$ ratio is not
+plotted against time. The results are shown in Fig.
+\ref{fig:benchmarks-merger}. A data point for SiLK for the $0.2$ ratio is not
 available since the \ac{NFQL} query executed at that data point uses
 \texttt{OR} expressions, which are not supported by SiLK.
 
@@ -131,7 +133,7 @@ filter stage to \texttt{flow-tools} files. As a result, the amount of disk I/O
 involved is twice as much as well. Even though each branch is delegated to a
 separate core using affinity masks, most of time is taken in writing these
 results to the file. These results although look less promising, they are way
-better than the original \texttt{nfql} merger implementation. The optimized
+better than the original \ac{NFQL} merger implementation. The optimized
 merger implementation takes advantage of sorted nature of filtered groups and
 therefore can significantly reduce the number of merger matches. It also
 writes a merged group record to a file only once despite the number of times
@@ -145,7 +147,7 @@ write their member flow records to \texttt{flow-tools} files.  However, since
 the merger receives each flow record as its own filtered group, each merged
 group has only one member. As a result, the ungrouper ends up rewriting the
 merged groups as \texttt{flow-tools} files using the same \texttt{zlib}
-compression level. This means that the execution engine end up taking twice
+compression level. This means that the execution engine ends up taking twice
 the amount of time than the merger. It is important to note, that SiLK does
 not have such an equivalent ungrouping tool and is therefore not considered in
 this final evaluation.

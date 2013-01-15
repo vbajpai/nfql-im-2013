@@ -20,17 +20,17 @@ SiLK \cite{SiLK} is a network traffic collection and analysis tool that comes
 quite close to providing similar capabilities as \ac{NFQL} and is therefore
 used as a reference point to compare the performance of the \texttt{nfql}
 execution engine. The design and implementation of SiLK, however, differs a
-lot from that of \texttt{nfql}. For instance, in SiLK there are separate tools to
-perform the task of each stage of the \ac{NFQL} processing pipeline. The stage
-functionality is not full-fledged though. The grouping and merging operations
-can only be performed using an equality operator. This restriction allows the
-tool to perform optimization such as using hash tables to perform lookups.
-\ac{NFQL} on the other hand, provides a much richer set of comparisons
-operations, such as \emph{equal, not equal, greater than, less than, greater
-or equal, less or equal}. There are also stringent requirements in SiLK how
-flow-data needs to be organized before it can be piped into a tool. The
-grouping tool, for instance, assumes that the to-be supplied input flow data
-is already sorted on the field column.  These requirements can make it a
-little cumbersome to design a full-fledged flow query.  For instance, trying
-to mimic a \ac{NFQL} query in SiLK sometimes ends up as a shell script with
-over a dozen of SiLK tools piped together.
+lot from that of \texttt{nfql}. For instance, in SiLK there are separate tools
+to perform the task of each stage of the \ac{NFQL} processing pipeline. The
+stage functionality is not full-fledged though. The grouping and merging
+operations can only be performed using an equality operator. This restriction
+allows the tool to perform optimization such as using hash tables to perform
+lookups.  \ac{NFQL} on the other hand, provides a much richer set of
+comparisons operations, such as \emph{equal, not equal, greater than, less
+than, greater or equal, less or equal}. There are also stringent requirements
+in SiLK on how the flow-data needs to be organized before it can be piped into
+a tool. The grouping tool, for instance, assumes that the to-be supplied input
+flow data is already sorted on the field column.  These requirements can make
+it a little cumbersome to design a full-fledged flow query.  For instance,
+trying to mimic a \ac{NFQL} query in SiLK sometimes ends up as a shell script
+with over a dozen of SiLK tools piped together.
